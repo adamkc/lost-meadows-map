@@ -21,6 +21,8 @@ SITE_DATA   <- file.path(PROJECT_DIR, "site", "data")
 MANIFEST_CSV  <- file.path(PROJECT_DIR, "manifest.csv")      # audit + Drive-ID join target
 MANIFEST_JSON <- file.path(SITE_DATA, "manifest.json")       # website input
 BOUNDARY_GEOJSON <- file.path(SITE_DATA, "huc10.geojson")
+PRED_HIGH_GEOJSON <- file.path(SITE_DATA, "predictions_high.geojson")    # on-map "view polygons" layers
+PRED_MED_GEOJSON  <- file.path(SITE_DATA, "predictions_medium.geojson")
 
 # ---- Source trees ----------------------------------------------------------
 WORK_ROOT   <- "C:/Users/adamk/Documents/Work/Lost Meadows RF"          # newer "60SN"
@@ -67,6 +69,9 @@ INCREMENTAL          <- TRUE    # skip re-staging a file whose staged copy is al
 STATEWIDE_SIMPLIFY_KEEP <- 0.15
 # Boundary polygon simplification for the web map.
 BOUNDARY_SIMPLIFY_KEEP  <- 0.04
+# Prediction overlay simplification (on-map "view polygons" — lighter than the
+# downloadable statewide product since it's purely visual).
+VIZ_SIMPLIFY_KEEP       <- 0.10
 # Google Drive virus-scan interstitial breaks naive direct-download links above
 # this size; such files get the /file/d/{id}/view link form instead.
 DRIVE_LARGEFILE_BYTES <- 100 * 1024^2

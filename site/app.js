@@ -74,7 +74,59 @@ map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-ri
 map.addControl(new maplibregl.ScaleControl({ unit: 'imperial' }), 'bottom-right');
 
 let MANIFEST = { watersheds: {}, grouped: {} };
+let BOUNDARY = null;
 let hoveredId = null;
+
+// Prediction overlay layers — lazy-loaded GeoJSON, filterable by HUC10.
+const PRED = {
+  high:   { src: 'data/predictions_high.geojson',   color: '#d73027', label: 'high-confidence' },
+  medium: { src: 'data/predictions_medium.geojson', color: '#f46d43', label: 'medium-confidence' }
+};
+const predState = { high: { loaded: false }, medium: { loaded: false } };
+
+async function ensurePred(conf) {
+  if (predState[conf].loaded) return;
+  const cfg = PRED[conf], id = 'pred-' + conf;
+  const data = await fetch(cfg.src).then((r) => r.json());
+  map.addSource(id, { type: 'geojson', data });
+  map.addLayer({ id: id + '-fill', type: 'fill', source: id, layout: { visibility: 'none' },
+    paint: { 'fill-color': cfg.color, 'fill-opacity': 0.55 } });
+  map.addLayer({ id: id + '-line', type: 'line', source: id, layout: { visibility: 'none' },
+    paint: { 'line-color': cfg.color, 'line-width': 0.5 } });
+  predState[conf].loaded = true;
+}
+function setPredVisible(conf, visible) {
+  const v = visible ? 'visible' : 'none';
+  for (const sfx of ['-fill', '-line'])
+    if (map.getLayer('pred-' + conf + sfx)) map.setLayoutProperty('pred-' + conf + sfx, 'visibility', v);
+  const box = document.querySelector('input[data-pred="' + conf + '"]');
+  if (box) box.checked = visible;
+}
+function setPredFilter(conf, huc) {
+  const f = huc ? ['==', ['get', 'huc10'], huc] : null;
+  for (const sfx of ['-fill', '-line'])
+    if (map.getLayer('pred-' + conf + sfx)) map.setFilter('pred-' + conf + sfx, f);
+}
+async function showPred(conf, huc, zoom) {
+  if (!predState[conf].loaded) toast('Loading ' + PRED[conf].label + ' polygons…');
+  await ensurePred(conf);
+  setPredFilter(conf, huc);
+  setPredVisible(conf, true);
+  hideToast();
+  if (zoom && huc) {
+    const b = boundsForHuc(huc);
+    if (b) map.fitBounds(b, { padding: 40, maxZoom: 12, duration: 600 });
+  }
+}
+window.viewPolys = (conf, huc) => showPred(conf, huc, true);
+
+function boundsForHuc(huc) {
+  if (!BOUNDARY) return null;
+  const f = BOUNDARY.features.find((x) => x.properties.huc10 === huc);
+  return f ? computeBounds({ features: [f] }) : null;
+}
+function toast(msg) { const t = document.getElementById('toast'); if (t) { t.textContent = msg; t.classList.add('show'); } }
+function hideToast() { const t = document.getElementById('toast'); if (t) t.classList.remove('show'); }
 
 // ---------------------------------------------------------------------------
 // Popup HTML for a clicked watershed
@@ -89,6 +141,17 @@ function watershedPopup(props) {
   }
   const items = entry.products.map((p) => linkRow(p.label, p.drive_url, p.size)).join('');
 
+  // "View on map" — only for confidence layers we have an overlay for.
+  const canHigh = entry.products.some((p) => p.type === 'high');
+  const canMed  = entry.products.some((p) => p.type === 'medium');
+  let vizHtml = '';
+  if (canHigh || canMed) {
+    vizHtml = '<div class="viz">View on map: ' +
+      (canHigh ? `<button class="viewbtn" onclick="viewPolys('high','${huc}')">high</button>` : '') +
+      (canMed  ? `<button class="viewbtn" onclick="viewPolys('medium','${huc}')">medium</button>` : '') +
+      '</div>';
+  }
+
   // Forest-level GeoPackage, if this watershed maps to one.
   let forestHtml = '';
   if (entry.forest && MANIFEST.grouped && MANIFEST.grouped.forests) {
@@ -96,7 +159,7 @@ function watershedPopup(props) {
     if (f) forestHtml = `<div class="forest"><strong>${entry.forest}</strong>` +
       `<ul class="links">${linkRow(f.label, f.drive_url, f.size)}</ul></div>`;
   }
-  return `<h3>${title}</h3><ul class="links">${items}</ul>${forestHtml}`;
+  return `<h3>${title}</h3><ul class="links">${items}</ul>${vizHtml}${forestHtml}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -132,6 +195,7 @@ map.on('load', () => {
     fetch('data/manifest.json').then((r) => r.json()).catch(() => ({ watersheds: {}, grouped: {} }))
   ]).then(([geo, manifest]) => {
     MANIFEST = manifest;
+    BOUNDARY = geo;
     if (manifest.generated)
       document.getElementById('generated').textContent = 'Updated ' + manifest.generated;
 
@@ -241,5 +305,14 @@ document.querySelectorAll('input[name="basemap"]').forEach((input) => {
     const activeId = `basemap-${ev.target.value}`;
     for (const id of basemapIds)
       map.setLayoutProperty(id, 'visibility', id === activeId ? 'visible' : 'none');
+  });
+});
+
+// Prediction overlay checkboxes — show/hide all watersheds for that confidence.
+document.querySelectorAll('input[data-pred]').forEach((input) => {
+  input.addEventListener('change', async (ev) => {
+    const conf = ev.target.dataset.pred;
+    if (ev.target.checked) await showPred(conf, null, false);
+    else setPredVisible(conf, false);
   });
 });

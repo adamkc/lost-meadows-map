@@ -15,6 +15,7 @@
   <div id="map"></div>
 
   <div id="loading" aria-live="polite">Loading data…</div>
+  <div id="toast" aria-live="polite"></div>
 
   <div id="panel">
     <button id="panel-toggle" type="button" aria-label="Collapse panel"
@@ -33,6 +34,15 @@
       <div class="legend-row"><span class="swatch" style="--c:#1a9850"></span> Full set (polygons + raster)</div>
       <div class="legend-row"><span class="swatch" style="--c:#fee08b"></span> Partial</div>
       <div class="legend-row"><span class="swatch" style="--c:#cccccc"></span> Boundary only — no products</div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Predicted meadows (overlay)</legend>
+      <label><input type="checkbox" data-pred="high">
+        <span class="swatch" style="--c:#d73027"></span> High-confidence</label>
+      <label><input type="checkbox" data-pred="medium">
+        <span class="swatch" style="--c:#f46d43"></span> Medium-confidence</label>
+      <p class="hint">Shows all watersheds. Or click one and choose “View on map”.</p>
     </fieldset>
 
     <fieldset id="bulk">

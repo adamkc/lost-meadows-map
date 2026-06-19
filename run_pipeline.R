@@ -21,9 +21,9 @@ if (length(.missing)) {
 }
 
 # --- load steps ------------------------------------------------------------
-for (f in sprintf("%02d_%s.R", c(0,1,2,3,4,5,6,8,7),
+for (f in sprintf("%02d_%s.R", c(0,1,2,3,4,5,6,8,7,10),
                   c("config","scan","parse","group_sidecars","dedup",
-                    "stage","grouped","boundary","manifest"))) {
+                    "stage","grouped","boundary","manifest","viz"))) {
   source(file.path(R_DIR, f))
 }
 
@@ -36,6 +36,7 @@ items   <- group_sidecars(inv)
 winners <- dedup_items(items)
 staged  <- stage_winners(winners)
 grouped <- build_grouped()
+build_viz_layers()
 lookup  <- build_boundary(staged_hucs = unique(staged$huc10))
 manifest <- build_manifest(staged, grouped, lookup)
 

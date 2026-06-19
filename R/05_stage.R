@@ -30,19 +30,21 @@ stage_winners <- function(winners) {
   banner("05  STAGE")
   ensure_dir(STAGING_DIR)
   out <- vector("list", nrow(winners))
+  skipped <- 0L
 
   for (i in seq_len(nrow(winners))) {
     w <- winners[i, ]
     base <- staged_basename(w$huc10, w$product, w$model, w$threshold)
     members <- strsplit(w$files, "\\|")[[1]]
+    sname <- paste0(base, if (w$kind == "raster") ".tif" else ".zip")
+    spath <- file.path(STAGING_DIR, sname)
 
-    if (w$kind == "raster") {
-      sname <- paste0(base, ".tif")
-      spath <- file.path(STAGING_DIR, sname)
+    fresh <- INCREMENTAL && file.exists(spath) && isTRUE(file.info(spath)$mtime >= w$mtime)
+    if (fresh) {
+      skipped <- skipped + 1L
+    } else if (w$kind == "raster") {
       file.copy(w$rep_path, spath, overwrite = TRUE, copy.mode = FALSE)
     } else {
-      sname <- paste0(base, ".zip")
-      spath <- file.path(STAGING_DIR, sname)
       .make_zip(spath, members)
     }
 
@@ -61,6 +63,7 @@ stage_winners <- function(winners) {
     )
   }
   res <- do.call(rbind, out)
-  cat(sprintf("  staged %d files (%s)\n", nrow(res), pretty_size(sum(res$size_bytes))))
+  cat(sprintf("  staged %d files (%s)  [%d reused, %d (re)written]\n",
+              nrow(res), pretty_size(sum(res$size_bytes)), skipped, nrow(res) - skipped))
   res
 }

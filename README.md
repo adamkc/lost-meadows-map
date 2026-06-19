@@ -111,6 +111,31 @@ Then enable Pages (Settings → Pages → Source: GitHub Actions).
 
 ---
 
+## Updating later — `rebuild_db.bat`
+
+When you add or replace model outputs, double-click **`rebuild_db.bat`** (or run
+it from a terminal). It chains the whole loop:
+
+1. `run_pipeline.R` — re-stage (only files whose source changed; `INCREMENTAL`).
+2. `rclone copy staging gdrive:LostMeadowsRF/products` — uploads only new/changed
+   files (incremental; existing files are skipped, not re-uploaded).
+3. `rclone lsjson … > drive_files.json` — a fast metadata listing (names + IDs),
+   not a re-download. Cheap even with 2000+ files.
+4. `R/09_merge_drive_ids.R` — rebuild the manifest with links.
+
+Then `git add site/data && git commit && git push` republishes the map (uncomment
+the last lines of the `.bat` to do this automatically once the repo exists).
+
+**Why rclone, not the Drive desktop app, for this:** Drive gives every file an
+opaque ID and the download URL is built from that ID — there is no link you can
+derive from a filename. The desktop app can upload, but it never exposes those
+IDs locally; only Drive's API does. `rclone lsjson` is the simplest scriptable
+way to read them, which is why the rebuild is a local `.bat` rather than a
+browser script. (You can still let the desktop app handle uploads and delete
+step 2 from the `.bat` — but you'd need `staging/` to live inside the synced
+Drive folder, and you'd keep step 3 either way.) Set `INCREMENTAL <- FALSE` in
+`00_config.R` to force a full re-stage.
+
 ## Layout
 
 ```

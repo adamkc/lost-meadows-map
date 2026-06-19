@@ -19,8 +19,17 @@
   )
 }
 
+.fresh <- function(dest, src) INCREMENTAL && file.exists(dest) &&
+  file.exists(src) && isTRUE(file.info(dest)$mtime >= file.info(src)$mtime)
+
 .stage_statewide <- function(in_shp, staged_zip, label) {
   if (!file.exists(in_shp)) { cat("  skip (missing):", in_shp, "\n"); return(NULL) }
+  out <- file.path(STAGING_DIR, staged_zip)
+  if (.fresh(out, in_shp)) {
+    cat(sprintf("  statewide %s: up to date, reused\n", staged_zip))
+    return(.grouped_row("statewide", NA, sub("statewide_SN_(.*)_conf\\.zip", "\\1", staged_zip),
+                        label, staged_zip, in_shp, file.info(in_shp)$mtime))
+  }
   suppressPackageStartupMessages({ library(sf); library(rmapshaper) })
   x  <- st_make_valid(st_read(in_shp, quiet = TRUE))
   if (is.na(st_crs(x)$epsg) || st_crs(x)$epsg != 4326) x <- st_transform(x, 4326)
@@ -34,7 +43,6 @@
   shp_out <- file.path(tmp, sub("\\.zip$", ".shp", staged_zip))
   st_write(x, shp_out, quiet = TRUE, delete_dsn = TRUE)
   parts <- list.files(tmp, pattern = sub("\\.zip$", "", staged_zip), full.names = TRUE)
-  out <- file.path(STAGING_DIR, staged_zip)
   if (file.exists(out)) file.remove(out)
   zip::zip(out, basename(parts), root = tmp)
   unlink(tmp, recursive = TRUE)
@@ -62,7 +70,9 @@ build_grouped <- function() {
     for (i in seq_len(nrow(df))) {
       display <- gsub("_", " ", df$key[i])
       sname   <- paste0("forest_", df$key[i], ".gpkg")
-      file.copy(df$path[i], file.path(STAGING_DIR, sname), overwrite = TRUE, copy.mode = FALSE)
+      dest    <- file.path(STAGING_DIR, sname)
+      if (!.fresh(dest, df$path[i]))
+        file.copy(df$path[i], dest, overwrite = TRUE, copy.mode = FALSE)
       rows[[length(rows) + 1]] <- .grouped_row(
         "forest", display, NA, paste0(display, " (GeoPackage)"),
         sname, df$path[i], df$mtime[i])
@@ -81,7 +91,9 @@ build_grouped <- function() {
   # --- full database ---
   if (file.exists(FULL_DATABASE_GPKG)) {
     sname <- "full_SN_database.gpkg"
-    file.copy(FULL_DATABASE_GPKG, file.path(STAGING_DIR, sname), overwrite = TRUE, copy.mode = FALSE)
+    dest  <- file.path(STAGING_DIR, sname)
+    if (!.fresh(dest, FULL_DATABASE_GPKG))
+      file.copy(FULL_DATABASE_GPKG, dest, overwrite = TRUE, copy.mode = FALSE)
     rows[[length(rows) + 1]] <- .grouped_row(
       "full", NA, NA, "Complete model database (GeoPackage)", sname,
       FULL_DATABASE_GPKG, file.info(FULL_DATABASE_GPKG)$mtime)

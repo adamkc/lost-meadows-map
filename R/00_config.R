@@ -60,6 +60,8 @@ WBD_BATCH       <- 75      # HUC10s per REST request (keeps URL length safe)
 INCLUDE_LOCAL        <- TRUE    # ~63 watersheds also have a per-watershed "local" model
 INCLUDE_LOCAL_THRESH <- FALSE   # custom local cutoffs (0-13, 0-11, ...) — niche; off by default
 INCLUDE_GROUPED      <- TRUE    # forest gpkgs + statewide merges + full database
+INCREMENTAL          <- TRUE    # skip re-staging a file whose staged copy is already up to date
+                                # (staged mtime >= source mtime). Makes repeat runs fast.
 
 # Statewide-merge smoothing (Part E). Visvalingam keep ratio: lower = smaller file.
 STATEWIDE_SIMPLIFY_KEEP <- 0.15

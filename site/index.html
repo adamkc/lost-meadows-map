@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lost Meadows Predictions — Watershed Downloads</title>
+  <meta name="description" content="Download Lost Meadows random-forest meadow predictions by HUC10 watershed: high- and medium-confidence polygons and raster predictions across the Sierra Nevada and beyond.">
+  <meta property="og:title" content="Lost Meadows Predictions — Watershed Downloads">
+  <meta property="og:description" content="Click a watershed to download high/medium-confidence prediction polygons and raster predictions.">
+  <meta property="og:type" content="website">
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+  <div id="map"></div>
+
+  <div id="loading" aria-live="polite">Loading data…</div>
+
+  <div id="panel">
+    <button id="panel-toggle" type="button" aria-label="Collapse panel"
+            aria-expanded="true" title="Collapse / expand">&minus;</button>
+    <h1>Lost Meadows Predictions</h1>
+    <p class="intro">Click a watershed to download its prediction files.</p>
+
+    <fieldset>
+      <legend>Basemap</legend>
+      <label><input type="radio" name="basemap" value="topo" checked> Topo</label>
+      <label><input type="radio" name="basemap" value="satellite"> Satellite</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Watershed coverage</legend>
+      <div class="legend-row"><span class="swatch" style="--c:#1a9850"></span> Full set (polygons + raster)</div>
+      <div class="legend-row"><span class="swatch" style="--c:#fee08b"></span> Partial</div>
+      <div class="legend-row"><span class="swatch" style="--c:#cccccc"></span> Boundary only — no products</div>
+    </fieldset>
+
+    <fieldset id="bulk">
+      <legend>Bulk downloads</legend>
+      <div id="bulk-links" class="links"><span class="muted">loading…</span></div>
+    </fieldset>
+
+    <p class="attribution">
+      Lost Meadows random-forest model (Sierra Nevada model)<br>
+      Files hosted on Google Drive<br>
+      <span id="generated"></span>
+    </p>
+  </div>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

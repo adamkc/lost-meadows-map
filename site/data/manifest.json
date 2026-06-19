@@ -1,0 +1,102 @@
+{
+  "generated": "2026-06-19",
+  "watersheds": {
+    "1605010103": {
+      "name": "Upper Truckee River-Frontal Lake Tahoe",
+      "forest": "Lake Tahoe Basin Management Unit",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": null,
+          "size": 900000
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": null,
+          "size": 1500000
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": null,
+          "size": 13000000
+        }
+      ]
+    },
+    "1605010104": {
+      "name": "General Creek-Frontal Lake Tahoe",
+      "forest": "Lake Tahoe Basin Management Unit",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": null,
+          "size": 900000
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": null,
+          "size": 1500000
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": null,
+          "size": 13000000
+        }
+      ]
+    },
+    "1801010101": {
+      "name": "North Fork Smith River",
+      "forest": "Rogue River-Siskiyou National Forests",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": null,
+          "size": 900000
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": null,
+          "size": 1500000
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": null,
+          "size": 13000000
+        }
+      ]
+    }
+  },
+  "grouped": {
+    "forests": [],
+    "statewide": [
+      {
+        "type": "high",
+        "name": null,
+        "label": "All SN high-conf polygons (smoothed)",
+        "drive_url": null,
+        "size": 10000000
+      },
+      {
+        "type": "medium",
+        "name": null,
+        "label": "All SN medium-conf polygons (smoothed)",
+        "drive_url": null,
+        "size": 16000000
+      }
+    ],
+    "full": {
+      "name": null,
+      "label": "Complete model database (GeoPackage)",
+      "drive_url": null,
+      "size": 459599872
+    }
+  }
+}

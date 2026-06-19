@@ -1,0 +1,31 @@
+# Heavy datasets — staged copies/zips/rasters bound for Google Drive, never versioned.
+staging/
+logs/
+
+# Bulk geospatial outputs (the small site/data/*.geojson + manifest.json ARE committed;
+# these patterns only catch stray large files dropped elsewhere in the tree).
+/*.tif
+/*.tiff
+/*.zip
+/*.gpkg
+/manifest.csv
+drive_files.json
+
+# R / RStudio
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# OS cruft
+.DS_Store
+Thumbs.db
+*Zone.Identifier
+
+# Editor / tooling state
+.vscode/
+.idea/
+.claude/
+*.tmp
+*~

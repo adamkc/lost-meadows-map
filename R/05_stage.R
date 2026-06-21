@@ -8,10 +8,12 @@
 # ===========================================================================
 
 staged_basename <- function(huc, product, model, threshold) {
+  # Main-family products always present as "SN" (the model's current name);
+  # "Global" winners are the same model under its original name.
   switch(product,
-    high         = sprintf("%s_%s_high_conf",   huc, model),
-    medium       = sprintf("%s_%s_medium_conf", huc, model),
-    raster       = sprintf("%s_%s_prediction",  huc, model),
+    high         = sprintf("%s_SN_high_conf",   huc),
+    medium       = sprintf("%s_SN_medium_conf", huc),
+    raster       = sprintf("%s_SN_prediction",  huc),
     local_high   = sprintf("%s_local_high_conf",   huc),
     local_medium = sprintf("%s_local_medium_conf", huc),
     local_raster = sprintf("%s_local_prediction",  huc),

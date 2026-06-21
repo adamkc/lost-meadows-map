@@ -38,7 +38,7 @@ staged  <- stage_winners(winners)
 grouped   <- build_grouped()                 # forests + full database
 statewide <- build_viz_layers(staged)        # overlay PMTiles + statewide GeoPackages
 grouped   <- do.call(rbind, Filter(Negate(is.null), list(grouped, statewide)))
-core_hucs <- unique(staged$huc10[startsWith(staged$product, "local")])  # training watersheds
+core_hucs <- setdiff(unique(staged$huc10[startsWith(staged$product, "local")]), CORE_EXCLUDE)  # training watersheds
 lookup    <- build_boundary(staged_hucs = unique(staged$huc10), core_hucs = core_hucs)
 manifest <- build_manifest(staged, grouped, lookup)
 

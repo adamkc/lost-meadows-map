@@ -71,6 +71,9 @@ INCLUDE_LOCAL_THRESH <- FALSE   # custom local cutoffs (0-13, 0-11, ...) — nic
 INCLUDE_GROUPED      <- TRUE    # forest gpkgs + statewide merges + full database
 INCREMENTAL          <- TRUE    # skip re-staging a file whose staged copy is already up to date
                                 # (staged mtime >= source mtime). Makes repeat runs fast.
+# Watersheds that have a local model but are NOT part of the canonical 60-watershed
+# study area — excluded from the purple "training watersheds" outline.
+CORE_EXCLUDE         <- c("1801021101", "1801021102", "1801021103", "1801021104", "1801021105")
 
 # Statewide-merge smoothing (Part E). Visvalingam keep ratio: lower = smaller file.
 STATEWIDE_SIMPLIFY_KEEP <- 0.15
@@ -90,8 +93,9 @@ DRIVE_LARGEFILE_BYTES <- 100 * 1024^2
 # ---- Model + product vocabulary -------------------------------------------
 # Filename model tokens -> internal model code.
 MODEL_MAP <- c("60SN" = "SN", "60Global" = "Global", "OldGlobal" = "OldGlobal", "local" = "local")
-# Human label per resolved model.
-MODEL_LABEL <- c("SN" = "Sierra Nevada model", "Global" = "Global model", "local" = "local model")
+# Human label per resolved model. "Global" was the model's original name before it
+# was renamed "Sierra Nevada"; both are the same model, so both label as SN.
+MODEL_LABEL <- c("SN" = "Sierra Nevada model", "Global" = "Sierra Nevada model", "local" = "local model")
 # Within a watershed, a newer/better main model supersedes an older one
 # REGARDLESS of file mtime. Higher rank wins. OldGlobal is dropped entirely.
 MODEL_RANK <- c("SN" = 2, "Global" = 1)

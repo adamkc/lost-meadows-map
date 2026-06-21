@@ -12,9 +12,12 @@ const basemaps = {
     attribution: 'Tiles &copy; Esri &mdash; Esri, USGS, NPS, NRCAN, and the GIS user community'
   },
   hillshade: {
-    tiles: ['https://basemap.nationalmap.gov/arcgis/rest/services/USGSShadedReliefOnly/MapServer/tile/{z}/{y}/{x}'],
-    maxzoom: 16,
-    attribution: 'Shaded relief &mdash; USGS 3DEP, The National Map'
+    // USGS 3DEP multidirectional hillshade, served at best-available resolution
+    // (1 m where lidar exists). WMS-style ImageServer export; {bbox-epsg-3857}
+    // is filled per tile by MapLibre.
+    tiles: ['https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer/exportImage?bbox={bbox-epsg-3857}&bboxSR=3857&imageSR=3857&size=256,256&format=png&f=image&renderingRule=%7B%22rasterFunction%22%3A%22Hillshade%20Multidirectional%22%7D'],
+    maxzoom: 17,
+    attribution: 'Hillshade &mdash; USGS 3DEP (multidirectional, 1&nbsp;m where available)'
   },
   satellite: {
     tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
@@ -100,7 +103,7 @@ async function ensurePred(conf) {
     paint: { 'fill-color': cfg.color,
       // Fade the fill out when zoomed in close so the basemap/imagery shows
       // through the polygon; the outline stays.
-      'fill-opacity': ['interpolate', ['linear'], ['zoom'], 12, 0.55, 14, 0.4, 15.5, 0.12, 16.5, 0] } });
+      'fill-opacity': ['interpolate', ['linear'], ['zoom'], 11, 0.55, 13, 0.32, 14.5, 0.1, 15, 0] } });
   map.addLayer({ id: id + '-line', type: 'line', source: id, 'source-layer': PRED_SOURCE_LAYER,
     layout: { visibility: 'none' },
     paint: { 'line-color': cfg.color,

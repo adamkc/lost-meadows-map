@@ -77,22 +77,23 @@ let MANIFEST = { watersheds: {}, grouped: {} };
 let BOUNDARY = null;
 let hoveredId = null;
 
-// Prediction overlay layers — lazy-loaded GeoJSON, filterable by HUC10.
+// Prediction overlay layers — PMTiles vector tiles, filterable by HUC10.
+maplibregl.addProtocol('pmtiles', new pmtiles.Protocol().tile);
 const PRED = {
-  high:   { src: 'data/predictions_high.geojson',   color: '#d73027', label: 'high-confidence' },
-  medium: { src: 'data/predictions_medium.geojson', color: '#f46d43', label: 'medium-confidence' }
+  high:   { url: 'pmtiles://data/predictions_high.pmtiles',   color: '#d73027', label: 'high-confidence' },
+  medium: { url: 'pmtiles://data/predictions_medium.pmtiles', color: '#f46d43', label: 'medium-confidence' }
 };
+const PRED_SOURCE_LAYER = 'predictions';
 const predState = { high: { loaded: false }, medium: { loaded: false } };
 
 async function ensurePred(conf) {
   if (predState[conf].loaded) return;
   const cfg = PRED[conf], id = 'pred-' + conf;
-  const data = await fetch(cfg.src).then((r) => r.json());
-  map.addSource(id, { type: 'geojson', data });
-  map.addLayer({ id: id + '-fill', type: 'fill', source: id, layout: { visibility: 'none' },
-    paint: { 'fill-color': cfg.color, 'fill-opacity': 0.55 } });
-  map.addLayer({ id: id + '-line', type: 'line', source: id, layout: { visibility: 'none' },
-    paint: { 'line-color': cfg.color, 'line-width': 0.5 } });
+  map.addSource(id, { type: 'vector', url: cfg.url });
+  map.addLayer({ id: id + '-fill', type: 'fill', source: id, 'source-layer': PRED_SOURCE_LAYER,
+    layout: { visibility: 'none' }, paint: { 'fill-color': cfg.color, 'fill-opacity': 0.55 } });
+  map.addLayer({ id: id + '-line', type: 'line', source: id, 'source-layer': PRED_SOURCE_LAYER,
+    layout: { visibility: 'none' }, paint: { 'line-color': cfg.color, 'line-width': 0.5 } });
   predState[conf].loaded = true;
 }
 function setPredVisible(conf, visible) {

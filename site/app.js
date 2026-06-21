@@ -117,19 +117,32 @@ function setPredVisible(conf, visible) {
   const box = document.querySelector('input[data-pred="' + conf + '"]');
   if (box) box.checked = visible;
 }
-// Overlay always shows all watersheds; "View on map" just turns it on and zooms
-// to the clicked watershed. (No per-watershed filtering — single source of truth.)
-async function showPred(conf, zoomHuc) {
+// One watershed at a time. `selectedHuc` is the watershed currently shown; the
+// overlay layers are always filtered to it.
+let selectedHuc = null;
+function filterPred(conf, huc) {
+  const f = ['==', ['get', 'huc10'], huc || '__none__'];
+  for (const sfx of ['-fill', '-line'])
+    if (map.getLayer('pred-' + conf + sfx)) map.setFilter('pred-' + conf + sfx, f);
+}
+function predVisible(conf) {
+  return map.getLayer('pred-' + conf + '-fill') &&
+         map.getLayoutProperty('pred-' + conf + '-fill', 'visibility') === 'visible';
+}
+// From a popup: show this confidence for THIS watershed, switch the selection
+// (re-filtering any other visible confidence to the same watershed), and zoom.
+async function viewPolys(conf, huc) {
   if (!predState[conf].loaded) toast('Loading ' + PRED[conf].label + ' polygons…');
+  selectedHuc = huc;
   await ensurePred(conf);
+  filterPred(conf, huc);
+  for (const other of ['high', 'medium']) if (other !== conf && predVisible(other)) filterPred(other, huc);
   setPredVisible(conf, true);
   hideToast();
-  if (zoomHuc) {
-    const b = boundsForHuc(zoomHuc);
-    if (b) map.fitBounds(b, { padding: 40, maxZoom: 13, duration: 600 });
-  }
+  const b = boundsForHuc(huc);
+  if (b) map.fitBounds(b, { padding: 40, maxZoom: 13, duration: 600 });
 }
-window.viewPolys = (conf, huc) => showPred(conf, huc);
+window.viewPolys = viewPolys;
 
 function boundsForHuc(huc) {
   if (!BOUNDARY) return null;
@@ -329,12 +342,23 @@ document.querySelectorAll('input[name="basemap"]').forEach((input) => {
   });
 });
 
-// Prediction overlay checkboxes — show/hide all watersheds for that confidence.
+// Prediction overlay checkboxes — toggle high/medium for the selected watershed.
 document.querySelectorAll('input[data-pred]').forEach((input) => {
   input.addEventListener('change', async (ev) => {
     const conf = ev.target.dataset.pred;
-    if (ev.target.checked) await showPred(conf, null);
-    else setPredVisible(conf, false);
+    if (ev.target.checked) {
+      if (!selectedHuc) {
+        ev.target.checked = false;
+        toast('Click a watershed, then choose “View on map”.');
+        setTimeout(hideToast, 2400);
+        return;
+      }
+      await ensurePred(conf);
+      filterPred(conf, selectedHuc);
+      setPredVisible(conf, true);
+    } else {
+      setPredVisible(conf, false);
+    }
   });
 });
 

@@ -325,16 +325,10 @@ document.querySelectorAll('input[data-pred]').forEach((input) => {
   });
 });
 
-// Intro splash — shown on first visit; reopenable via the "About this map" link.
+// Intro splash — shown on every load until dismissed; reopen via "About this map".
 const splash = document.getElementById('splash');
 if (splash) {
-  let seen = false;
-  try { seen = localStorage.getItem('lmm_splash_seen') === '1'; } catch (e) {}
-  if (seen) splash.classList.add('hidden');
-  const hideSplash = () => {
-    splash.classList.add('hidden');
-    try { localStorage.setItem('lmm_splash_seen', '1'); } catch (e) {}
-  };
+  const hideSplash = () => splash.classList.add('hidden');
   document.getElementById('splash-close').addEventListener('click', hideSplash);
   document.getElementById('splash-enter').addEventListener('click', hideSplash);
   const about = document.getElementById('about-link');

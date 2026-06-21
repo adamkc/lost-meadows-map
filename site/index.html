@@ -27,10 +27,11 @@
         watershed to download its predictions or view them on the map.</p>
 
       <h3>High vs. medium confidence</h3>
-      <p>High-confidence polygons use a stricter threshold — fewer locations, but each is
-        more likely to be a true meadow. Medium-confidence polygons use a more inclusive
-        threshold: broader coverage and more candidate meadows (including the high-confidence
-        ones), at the cost of more false positives.</p>
+      <p>Two sets of predicted meadow polygons at different probability thresholds.
+        High-confidence uses a stricter threshold — fewer polygons, but high certainty
+        each is a real meadow. Medium-confidence uses a more permissive threshold,
+        capturing additional likely meadows. Both thresholds were chosen conservatively,
+        so the model tends to miss some real meadows rather than over-predict them.</p>
 
       <h3>Where the model works best</h3>
       <p>The model was trained on high-elevation meadows in the Sierra Nevada. The farther a
@@ -39,8 +40,8 @@
 
       <h3>Publications</h3>
       <ul class="splash-pubs">
-        <li><a href="#" target="_blank" rel="noopener">Publication one — title (link pending)</a></li>
-        <li><a href="#" target="_blank" rel="noopener">Publication two — title (link pending)</a></li>
+        <li><a href="https://research.fs.usda.gov/treesearch/66484" target="_blank" rel="noopener">Cummings et al. (2023), <em>Resetting the baseline: using machine learning to find lost meadows</em></a> — the model and its outputs.</li>
+        <li><a href="https://research.fs.usda.gov/treesearch/66206" target="_blank" rel="noopener">Pope &amp; Cummings (2023), <em>Recovering the lost potential of meadows…</em></a> — applied approaches and use cases.</li>
       </ul>
 
       <button id="splash-enter" class="splash-enter" type="button">Explore the map</button>

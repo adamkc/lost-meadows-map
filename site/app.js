@@ -225,8 +225,11 @@ map.on('load', () => {
     map.addLayer({
       id: 'huc-line', type: 'line', source: 'huc',
       paint: {
-        'line-color': '#33576e',
-        'line-width': ['case', ['boolean', ['feature-state', 'hover'], false], 2.2, 0.6]
+        // Training (core) watersheds get a distinct, heavier purple outline.
+        'line-color': ['case', ['get', 'core'], '#6a3d9a', '#33576e'],
+        'line-width': ['case', ['boolean', ['feature-state', 'hover'], false], 2.4,
+          ['case', ['get', 'core'], 1.5, 0.5]],
+        'line-opacity': ['case', ['get', 'core'], 0.95, 0.65]
       }
     });
 

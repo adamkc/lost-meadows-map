@@ -44,6 +44,10 @@ html, body {
   display: inline-block; width: 12px; height: 12px; background: var(--c);
   border: 1px solid rgba(0, 0, 0, 0.25); border-radius: 2px; flex-shrink: 0;
 }
+.line-swatch {
+  display: inline-block; width: 14px; height: 0; background: none;
+  border-top: 3px solid var(--c); flex-shrink: 0;
+}
 
 /* Bulk-download + popup link lists */
 .links { list-style: none; margin: 4px 0 0; padding: 0; }

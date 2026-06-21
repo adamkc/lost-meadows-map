@@ -85,7 +85,7 @@
   res
 }
 
-build_boundary <- function(staged_hucs) {
+build_boundary <- function(staged_hucs, core_hucs = character(0)) {
   banner("08  BOUNDARY")
   ensure_dir(SITE_DATA)
   suppressPackageStartupMessages({ library(sf); library(rmapshaper) })
@@ -110,6 +110,10 @@ build_boundary <- function(staged_hucs) {
   cat(sprintf("  boundaries: %d  |  missing geometry: %d\n", nrow(w), length(gaps)))
 
   forests <- .forest_lookup(w)
+
+  # Model training watersheds (those with a local model) — the validated core.
+  w$core <- w$huc10 %in% as.character(core_hucs)
+  cat(sprintf("  core (training) watersheds: %d\n", sum(w$core)))
 
   w_simp <- ms_simplify(w, keep = BOUNDARY_SIMPLIFY_KEEP, method = "vis",
                         keep_shapes = TRUE, explode = FALSE)

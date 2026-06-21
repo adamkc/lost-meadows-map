@@ -22,21 +22,30 @@
     <div class="splash-card" role="dialog" aria-modal="true" aria-labelledby="splash-title">
       <button id="splash-close" class="splash-close" type="button" aria-label="Close">&times;</button>
       <h2 id="splash-title">Lost Meadows of the Sierra Nevada</h2>
-      <p class="splash-lead">A random-forest model that predicts meadow locations across the
-        Sierra Nevada and surrounding regions, at the HUC10 watershed scale. Click any
+      <p class="splash-lead">The Lost Meadows Model uses random forest machine learning to find
+        places in the Sierra Nevada that share the hydrogeomorphic signature of existing
+        riparian (stream-associated) meadows: low-gradient settings where surface water slows
+        and groundwater collects. Many predicted areas are "lost meadows" that likely held
+        meadows in the past and filled in with forest as channels incised and water tables
+        dropped. Others share meadow-like geomorphology but may never have been meadow. Click a
         watershed to download its predictions or view them on the map.</p>
 
       <h3>High vs. medium confidence</h3>
-      <p>Two sets of predicted meadow polygons at different probability thresholds.
-        High-confidence uses a stricter threshold — fewer polygons, but high certainty
-        each is a real meadow. Medium-confidence uses a more permissive threshold,
-        capturing additional likely meadows. Both thresholds were chosen conservatively,
-        so the model tends to miss some real meadows rather than over-predict them.</p>
+      <p>Each pixel gets a score from 0 to 1 for how closely it resembles meadow conditions, and
+        we draw polygons at two thresholds. The high-confidence set uses a stricter cutoff: fewer
+        polygons, with more certainty that each marks meadow-like ground. The medium-confidence
+        set uses a looser cutoff and picks up more candidate areas. Both cutoffs are deliberately
+        conservative, so the model tends to miss real meadows rather than over-predict them. These
+        polygons under-represent likely meadow habitat rather than over-represent it.</p>
 
       <h3>Where the model works best</h3>
-      <p>The model was trained on high-elevation meadows in the Sierra Nevada. The farther a
-        watershed sits from that training area — lower elevations, or regions outside the
-        Sierra — the less certain its predictions. Treat distant predictions as exploratory.</p>
+      <p>The model was trained within a 60-watershed area of the Sierra Nevada, outlined in purple,
+        and validated there against an independent meadow dataset and high-resolution imagery. Read
+        predictions outside that area with more caution. Meadow formation depends heavily on
+        elevation and geology, and the model has not been validated beyond the Sierra Nevada, so
+        where a watershed's elevation or bedrock differs from the training area its predictions are
+        exploratory. Hosting these layers for download does not mean the authors endorse any
+        particular polygon. Treat them as a planning aid, not ground truth.</p>
 
       <h3>Publications</h3>
       <ul class="splash-pubs">
@@ -65,6 +74,7 @@
       <div class="legend-row"><span class="swatch" style="--c:#1a9850"></span> Full set (polygons + raster)</div>
       <div class="legend-row"><span class="swatch" style="--c:#fee08b"></span> Partial</div>
       <div class="legend-row"><span class="swatch" style="--c:#cccccc"></span> Boundary only — no products</div>
+      <div class="legend-row"><span class="line-swatch" style="--c:#6a3d9a"></span> Model training watersheds</div>
     </fieldset>
 
     <fieldset>

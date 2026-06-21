@@ -25,6 +25,11 @@ PRED_HIGH_GEOJSON <- file.path(SITE_DATA, "predictions_high.geojson")    # merge
 PRED_MED_GEOJSON  <- file.path(SITE_DATA, "predictions_medium.geojson")
 PRED_HIGH_PMTILES <- file.path(SITE_DATA, "predictions_high.pmtiles")    # committed vector tiles the site loads
 PRED_MED_PMTILES  <- file.path(SITE_DATA, "predictions_medium.pmtiles")
+# Statewide download GeoPackages (ALL watersheds), staged for Drive. Built from
+# the same all-watershed merge as the overlay (10_viz.R), replacing the stale
+# ~27-watershed GroupedPredictions/Temp/PredictedMeadows_*.shp aggregates.
+STATEWIDE_HIGH_GPKG <- "statewide_SN_high.gpkg"
+STATEWIDE_MED_GPKG  <- "statewide_SN_medium.gpkg"
 
 # ---- Source trees ----------------------------------------------------------
 WORK_ROOT   <- "C:/Users/adamk/Documents/Work/Lost Meadows RF"          # newer "60SN"

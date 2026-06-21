@@ -35,9 +35,10 @@ inv     <- parse_files(inv)
 items   <- group_sidecars(inv)
 winners <- dedup_items(items)
 staged  <- stage_winners(winners)
-grouped <- build_grouped()
-build_viz_layers(staged)
-lookup  <- build_boundary(staged_hucs = unique(staged$huc10))
+grouped   <- build_grouped()                 # forests + full database
+statewide <- build_viz_layers(staged)        # overlay PMTiles + statewide GeoPackages
+grouped   <- do.call(rbind, Filter(Negate(is.null), list(grouped, statewide)))
+lookup    <- build_boundary(staged_hucs = unique(staged$huc10))
 manifest <- build_manifest(staged, grouped, lookup)
 
 # --- summary ---------------------------------------------------------------

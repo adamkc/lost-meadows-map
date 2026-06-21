@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-20",
+  "generated": "2026-06-21",
   "watersheds": {
     "1605010101": {
       "name": "Third Creek-Frontal Lake Tahoe",
@@ -9399,16 +9399,16 @@
       {
         "type": "high",
         "name": "",
-        "label": "All Sierra Nevada high-confidence polygons (smoothed)",
-        "drive_url": "https://drive.google.com/uc?export=download&id=1eXvSL1Q5KWXlfhe4V4y6SMMumSAHLqNK",
-        "size": 1472227
+        "label": "All Sierra Nevada high-confidence polygons (GeoPackage)",
+        "drive_url": "https://drive.google.com/file/d/1ABxqAyIyiez8OTbExaPj1hMEAmguyf_n/view",
+        "size": 163491840
       },
       {
         "type": "medium",
         "name": "",
-        "label": "All Sierra Nevada medium-confidence polygons (smoothed)",
-        "drive_url": "https://drive.google.com/uc?export=download&id=1528TRWsUd_K_YpiPiZTCld6MempKnY5k",
-        "size": 2380183
+        "label": "All Sierra Nevada medium-confidence polygons (GeoPackage)",
+        "drive_url": "https://drive.google.com/file/d/1IkidxDZQjz2MYCi2rskmku0cGpTLAcSN/view",
+        "size": 172728320
       }
     ],
     "full": {

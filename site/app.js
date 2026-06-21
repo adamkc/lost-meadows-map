@@ -170,7 +170,7 @@ function renderBulk() {
   const g = MANIFEST.grouped || {};
   const parts = [];
   if (g.statewide && g.statewide.length) {
-    parts.push('<div class="bulk-group"><strong>Statewide (smoothed)</strong><ul class="links">' +
+    parts.push('<div class="bulk-group"><strong>Statewide (all watersheds)</strong><ul class="links">' +
       g.statewide.map((s) => linkRow(s.label, s.drive_url, s.size)).join('') + '</ul></div>');
   }
   if (g.full) {
@@ -212,7 +212,14 @@ map.on('load', () => {
       paint: {
         'fill-color': ['match', ['get', 'avail'],
           'full', AVAIL_COLOR.full, 'partial', AVAIL_COLOR.partial, AVAIL_COLOR.none],
-        'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.75, 0.5]
+        // Light overall; fades to fully transparent once zoomed into ~a single
+        // watershed so the prediction overlay and basemap read cleanly.
+        'fill-opacity': [
+          'interpolate', ['linear'], ['zoom'],
+          6,    ['case', ['boolean', ['feature-state', 'hover'], false], 0.40, 0.28],
+          9,    ['case', ['boolean', ['feature-state', 'hover'], false], 0.22, 0.12],
+          10.5, 0
+        ]
       }
     });
     map.addLayer({
@@ -317,3 +324,19 @@ document.querySelectorAll('input[data-pred]').forEach((input) => {
     else setPredVisible(conf, false);
   });
 });
+
+// Intro splash — shown on first visit; reopenable via the "About this map" link.
+const splash = document.getElementById('splash');
+if (splash) {
+  let seen = false;
+  try { seen = localStorage.getItem('lmm_splash_seen') === '1'; } catch (e) {}
+  if (seen) splash.classList.add('hidden');
+  const hideSplash = () => {
+    splash.classList.add('hidden');
+    try { localStorage.setItem('lmm_splash_seen', '1'); } catch (e) {}
+  };
+  document.getElementById('splash-close').addEventListener('click', hideSplash);
+  document.getElementById('splash-enter').addEventListener('click', hideSplash);
+  const about = document.getElementById('about-link');
+  if (about) about.addEventListener('click', (e) => { e.preventDefault(); splash.classList.remove('hidden'); });
+}

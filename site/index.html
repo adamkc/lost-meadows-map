@@ -17,6 +17,36 @@
   <div id="loading" aria-live="polite">Loading data…</div>
   <div id="toast" aria-live="polite"></div>
 
+  <!-- Intro / about splash -->
+  <div id="splash" class="splash-overlay">
+    <div class="splash-card" role="dialog" aria-modal="true" aria-labelledby="splash-title">
+      <button id="splash-close" class="splash-close" type="button" aria-label="Close">&times;</button>
+      <h2 id="splash-title">Lost Meadows of the Sierra Nevada</h2>
+      <p class="splash-lead">A random-forest model that predicts meadow locations across the
+        Sierra Nevada and surrounding regions, at the HUC10 watershed scale. Click any
+        watershed to download its predictions or view them on the map.</p>
+
+      <h3>High vs. medium confidence</h3>
+      <p>High-confidence polygons use a stricter threshold — fewer locations, but each is
+        more likely to be a true meadow. Medium-confidence polygons use a more inclusive
+        threshold: broader coverage and more candidate meadows (including the high-confidence
+        ones), at the cost of more false positives.</p>
+
+      <h3>Where the model works best</h3>
+      <p>The model was trained on high-elevation meadows in the Sierra Nevada. The farther a
+        watershed sits from that training area — lower elevations, or regions outside the
+        Sierra — the less certain its predictions. Treat distant predictions as exploratory.</p>
+
+      <h3>Publications</h3>
+      <ul class="splash-pubs">
+        <li><a href="#" target="_blank" rel="noopener">Publication one — title (link pending)</a></li>
+        <li><a href="#" target="_blank" rel="noopener">Publication two — title (link pending)</a></li>
+      </ul>
+
+      <button id="splash-enter" class="splash-enter" type="button">Explore the map</button>
+    </div>
+  </div>
+
   <div id="panel">
     <button id="panel-toggle" type="button" aria-label="Collapse panel"
             aria-expanded="true" title="Collapse / expand">&minus;</button>
@@ -52,7 +82,7 @@
 
     <p class="attribution">
       Lost Meadows random-forest model (Sierra Nevada model)<br>
-      Files hosted on Google Drive<br>
+      <a href="#" id="about-link">About this map</a> &middot; Files on Google Drive<br>
       <span id="generated"></span>
     </p>
   </div>

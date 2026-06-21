@@ -22,35 +22,8 @@
 .fresh <- function(dest, src) INCREMENTAL && file.exists(dest) &&
   file.exists(src) && isTRUE(file.info(dest)$mtime >= file.info(src)$mtime)
 
-.stage_statewide <- function(in_shp, staged_zip, label) {
-  if (!file.exists(in_shp)) { cat("  skip (missing):", in_shp, "\n"); return(NULL) }
-  out <- file.path(STAGING_DIR, staged_zip)
-  if (.fresh(out, in_shp)) {
-    cat(sprintf("  statewide %s: up to date, reused\n", staged_zip))
-    return(.grouped_row("statewide", NA, sub("statewide_SN_(.*)_conf\\.zip", "\\1", staged_zip),
-                        label, staged_zip, in_shp, file.info(in_shp)$mtime))
-  }
-  suppressPackageStartupMessages({ library(sf); library(rmapshaper) })
-  x  <- st_make_valid(st_read(in_shp, quiet = TRUE))
-  if (is.na(st_crs(x)$epsg) || st_crs(x)$epsg != 4326) x <- st_transform(x, 4326)
-  v0 <- sum(vapply(st_geometry(x), function(g) length(unlist(g)), integer(1)))
-  x  <- ms_simplify(x, keep = STATEWIDE_SIMPLIFY_KEEP, method = "vis",
-                    keep_shapes = TRUE, explode = FALSE)
-  v1 <- sum(vapply(st_geometry(x), function(g) length(unlist(g)), integer(1)))
-
-  tmp <- file.path(STAGING_DIR, ".tmp_statewide"); ensure_dir(tmp)
-  unlink(file.path(tmp, "*"))
-  shp_out <- file.path(tmp, sub("\\.zip$", ".shp", staged_zip))
-  st_write(x, shp_out, quiet = TRUE, delete_dsn = TRUE)
-  parts <- list.files(tmp, pattern = sub("\\.zip$", "", staged_zip), full.names = TRUE)
-  if (file.exists(out)) file.remove(out)
-  zip::zip(out, basename(parts), root = tmp)
-  unlink(tmp, recursive = TRUE)
-  cat(sprintf("  statewide %s: %d -> %d vertices, %s\n",
-              staged_zip, v0, v1, pretty_size(file.info(out)$size)))
-  .grouped_row("statewide", NA, sub("statewide_SN_(.*)_conf\\.zip", "\\1", staged_zip),
-               label, staged_zip, in_shp, file.info(in_shp)$mtime)
-}
+# NB: statewide (all-watershed) high/medium GeoPackages are built in 10_viz.R
+# from the per-watershed winners — not here. build_grouped() handles forests + full.
 
 build_grouped <- function() {
   banner("06  GROUPED")
@@ -80,13 +53,7 @@ build_grouped <- function() {
     cat(sprintf("  forests staged: %d\n", nrow(df)))
   } else cat("  no forest gpkgs found\n")
 
-  # --- statewide merged, smoothed (Part E) ---
-  rows[[length(rows) + 1]] <- .stage_statewide(
-    STATEWIDE_HIGH_SHP, "statewide_SN_high_conf.zip",
-    "All Sierra Nevada high-confidence polygons (smoothed)")
-  rows[[length(rows) + 1]] <- .stage_statewide(
-    STATEWIDE_MED_SHP, "statewide_SN_medium_conf.zip",
-    "All Sierra Nevada medium-confidence polygons (smoothed)")
+  # (statewide high/medium GeoPackages are produced by 10_viz.R)
 
   # --- full database ---
   if (file.exists(FULL_DATABASE_GPKG)) {

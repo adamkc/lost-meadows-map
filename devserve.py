@@ -13,6 +13,11 @@ DIRECTORY = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site")
 
 
 class RangeHandler(http.server.SimpleHTTPRequestHandler):
+    def end_headers(self):
+        # No caching during local dev so edits show up on reload.
+        self.send_header("Cache-Control", "no-store, must-revalidate")
+        super().end_headers()
+
     def do_GET(self):
         rng = self.headers.get("Range")
         path = self.translate_path(self.path)

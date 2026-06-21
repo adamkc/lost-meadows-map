@@ -1,18 +1,16 @@
 # ===========================================================================
-# 10_viz.R  --  on-map "view polygons" overlay as PMTiles vector tiles
+# 10_viz.R  --  all-watershed prediction products from the per-watershed polygons
 #
-# For each confidence (high/medium): merge the per-watershed prediction polygons
-# for ALL published watersheds into one HUC10-tagged GeoJSON (the intermediate,
-# gitignored), then tile it to a compact .pmtiles the site loads via range
-# requests. Vector tiles handle ~600k polygons that a single GeoJSON cannot.
+# For each confidence (high/medium): merge EVERY published watershed's prediction
+# polygons into one HUC10-tagged GeoJSON (gitignored intermediate), then derive:
+#   * site/data/predictions_{high,medium}.pmtiles  — on-map overlay (vector tiles)
+#   * staging/statewide_SN_{high,medium}.gpkg       — statewide download (Drive)
+# Returns the statewide GeoPackage rows for the manifest "grouped" block.
 #
-# Built from the staged winners (in-pipeline) or from manifest.csv (standalone).
-# NB: the GroupedPredictions/Temp/PredictedMeadows_*.shp pre-merge is only ~27
-# watersheds — do NOT use it as the overlay source.
+# This replaces the stale ~27-watershed GroupedPredictions/Temp pre-merge as the
+# source for BOTH the overlay and the statewide download.
 # ===========================================================================
 
-# Merge every per-watershed source shapefile for `product` into one sf, each
-# feature tagged with its huc10, simplified for the web.
 .merge_to_geojson <- function(rows, product, out_geojson) {
   suppressPackageStartupMessages({ library(sf); library(rmapshaper) })
   rows <- rows[rows$product == product & !is.na(rows$source_path) & nzchar(rows$source_path), ]
@@ -41,35 +39,59 @@
 }
 
 .tile <- function(geojson, pmtiles) {
-  suppressPackageStartupMessages(library(sf))
+  if (INCREMENTAL && file.exists(pmtiles) && isTRUE(file.info(pmtiles)$mtime >= file.info(geojson)$mtime)) {
+    cat("  ", basename(pmtiles), ": up to date\n"); return(invisible())
+  }
   if (file.exists(pmtiles)) file.remove(pmtiles)
   sf::gdal_utils("vectortranslate", geojson, pmtiles,
     options = c("-f", "PMTiles", "-nln", "predictions",
-                "-dsco", paste0("MINZOOM=", VIZ_MINZOOM),
-                "-dsco", paste0("MAXZOOM=", VIZ_MAXZOOM),
+                "-dsco", paste0("MINZOOM=", VIZ_MINZOOM), "-dsco", paste0("MAXZOOM=", VIZ_MAXZOOM),
                 "-dsco", "SIMPLIFICATION=8", "-dsco", "SIMPLIFICATION_MAX_ZOOM=4",
                 "-dsco", "MAX_SIZE=500000", "-dsco", "MAX_FEATURES=100000"))
   cat(sprintf("  tiled -> %s (%s)\n", basename(pmtiles), pretty_size(file.info(pmtiles)$size)))
 }
 
-.build_layer <- function(rows, product, geojson, pmtiles) {
-  # Reuse an existing merged GeoJSON (the slow per-watershed read) when present.
+.write_gpkg <- function(geojson, gpkg_name) {
+  ensure_dir(STAGING_DIR)
+  out <- file.path(STAGING_DIR, gpkg_name)
+  if (INCREMENTAL && file.exists(out) && isTRUE(file.info(out)$mtime >= file.info(geojson)$mtime)) {
+    cat("  ", gpkg_name, ": up to date\n"); return(out)
+  }
+  if (file.exists(out)) file.remove(out)
+  sf::gdal_utils("vectortranslate", geojson, out,
+                 options = c("-f", "GPKG", "-nln", "predicted_meadows"))
+  cat(sprintf("  gpkg  -> %s (%s)\n", gpkg_name, pretty_size(file.info(out)$size)))
+  out
+}
+
+# Build one confidence layer's products; return its statewide-gpkg manifest row.
+.build_layer <- function(rows, product, geojson, pmtiles, gpkg_name, label) {
   if (file.exists(geojson) && file.info(geojson)$size > 1e6) {
     cat("  reusing merged", basename(geojson), "\n")
   } else if (!.merge_to_geojson(rows, product, geojson)) {
-    return(invisible())
+    return(NULL)
   }
   .tile(geojson, pmtiles)
+  out <- .write_gpkg(geojson, gpkg_name)
+  data.frame(scope = "statewide", name = NA_character_, type = product, label = label,
+             staged_name = gpkg_name, size_bytes = file.info(out)$size,
+             source_path = geojson, source_mtime = file.info(out)$mtime,
+             stringsAsFactors = FALSE)
 }
 
 # `staged` = table from 05_stage.R (in-pipeline); NULL => rebuild from manifest.csv.
 build_viz_layers <- function(staged = NULL) {
-  banner("10  VIZ LAYERS (PMTiles)")
+  banner("10  VIZ + STATEWIDE (all watersheds)")
   ensure_dir(SITE_DATA)
   if (is.null(staged)) {
-    if (!file.exists(MANIFEST_CSV)) { cat("  manifest.csv missing — run the pipeline first\n"); return(invisible()) }
+    if (!file.exists(MANIFEST_CSV)) { cat("  manifest.csv missing — run the pipeline first\n"); return(NULL) }
     staged <- utils::read.csv(MANIFEST_CSV, colClasses = "character")
   }
-  .build_layer(staged, "high",   PRED_HIGH_GEOJSON, PRED_HIGH_PMTILES)
-  .build_layer(staged, "medium", PRED_MED_GEOJSON,  PRED_MED_PMTILES)
+  rows <- rbind(
+    .build_layer(staged, "high",   PRED_HIGH_GEOJSON, PRED_HIGH_PMTILES, STATEWIDE_HIGH_GPKG,
+                 "All Sierra Nevada high-confidence polygons (GeoPackage)"),
+    .build_layer(staged, "medium", PRED_MED_GEOJSON,  PRED_MED_PMTILES,  STATEWIDE_MED_GPKG,
+                 "All Sierra Nevada medium-confidence polygons (GeoPackage)")
+  )
+  rows
 }

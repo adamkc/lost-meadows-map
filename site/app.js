@@ -11,6 +11,11 @@ const basemaps = {
     maxzoom: 19,
     attribution: 'Tiles &copy; Esri &mdash; Esri, USGS, NPS, NRCAN, and the GIS user community'
   },
+  hillshade: {
+    tiles: ['https://basemap.nationalmap.gov/arcgis/rest/services/USGSShadedReliefOnly/MapServer/tile/{z}/{y}/{x}'],
+    maxzoom: 16,
+    attribution: 'Shaded relief &mdash; USGS 3DEP, The National Map'
+  },
   satellite: {
     tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
     maxzoom: 19,
@@ -68,7 +73,7 @@ const style = {
 
 const map = new maplibregl.Map({
   container: 'map', style,
-  center: [-119.5, 38.5], zoom: 5, minZoom: 3, maxZoom: 14
+  center: [-119.5, 38.5], zoom: 5, minZoom: 3, maxZoom: 17
 });
 map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
 map.addControl(new maplibregl.ScaleControl({ unit: 'imperial' }), 'bottom-right');
@@ -91,9 +96,15 @@ async function ensurePred(conf) {
   const cfg = PRED[conf], id = 'pred-' + conf;
   map.addSource(id, { type: 'vector', url: cfg.url });
   map.addLayer({ id: id + '-fill', type: 'fill', source: id, 'source-layer': PRED_SOURCE_LAYER,
-    layout: { visibility: 'none' }, paint: { 'fill-color': cfg.color, 'fill-opacity': 0.55 } });
+    layout: { visibility: 'none' },
+    paint: { 'fill-color': cfg.color,
+      // Fade the fill out when zoomed in close so the basemap/imagery shows
+      // through the polygon; the outline stays.
+      'fill-opacity': ['interpolate', ['linear'], ['zoom'], 12, 0.55, 14, 0.4, 15.5, 0.12, 16.5, 0] } });
   map.addLayer({ id: id + '-line', type: 'line', source: id, 'source-layer': PRED_SOURCE_LAYER,
-    layout: { visibility: 'none' }, paint: { 'line-color': cfg.color, 'line-width': 0.5 } });
+    layout: { visibility: 'none' },
+    paint: { 'line-color': cfg.color,
+      'line-width': ['interpolate', ['linear'], ['zoom'], 11, 0.5, 14, 1.1, 17, 1.8] } });
   predState[conf].loaded = true;
 }
 function setPredVisible(conf, visible) {
@@ -103,23 +114,19 @@ function setPredVisible(conf, visible) {
   const box = document.querySelector('input[data-pred="' + conf + '"]');
   if (box) box.checked = visible;
 }
-function setPredFilter(conf, huc) {
-  const f = huc ? ['==', ['get', 'huc10'], huc] : null;
-  for (const sfx of ['-fill', '-line'])
-    if (map.getLayer('pred-' + conf + sfx)) map.setFilter('pred-' + conf + sfx, f);
-}
-async function showPred(conf, huc, zoom) {
+// Overlay always shows all watersheds; "View on map" just turns it on and zooms
+// to the clicked watershed. (No per-watershed filtering — single source of truth.)
+async function showPred(conf, zoomHuc) {
   if (!predState[conf].loaded) toast('Loading ' + PRED[conf].label + ' polygons…');
   await ensurePred(conf);
-  setPredFilter(conf, huc);
   setPredVisible(conf, true);
   hideToast();
-  if (zoom && huc) {
-    const b = boundsForHuc(huc);
-    if (b) map.fitBounds(b, { padding: 40, maxZoom: 12, duration: 600 });
+  if (zoomHuc) {
+    const b = boundsForHuc(zoomHuc);
+    if (b) map.fitBounds(b, { padding: 40, maxZoom: 13, duration: 600 });
   }
 }
-window.viewPolys = (conf, huc) => showPred(conf, huc, true);
+window.viewPolys = (conf, huc) => showPred(conf, huc);
 
 function boundsForHuc(huc) {
   if (!BOUNDARY) return null;
@@ -323,7 +330,7 @@ document.querySelectorAll('input[name="basemap"]').forEach((input) => {
 document.querySelectorAll('input[data-pred]').forEach((input) => {
   input.addEventListener('change', async (ev) => {
     const conf = ev.target.dataset.pred;
-    if (ev.target.checked) await showPred(conf, null, false);
+    if (ev.target.checked) await showPred(conf, null);
     else setPredVisible(conf, false);
   });
 });

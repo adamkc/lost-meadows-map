@@ -31,6 +31,87 @@ const basemapIds = Object.keys(basemaps).map((k) => `basemap-${k}`);
 const AVAIL_COLOR = { full: '#1a9850', partial: '#fee08b', none: '#cccccc' };
 
 // ---------------------------------------------------------------------------
+// Download tracking (optional — logs WHICH files get downloaded, by watershed).
+// Two independent sinks; either can be left off:
+//   1. TRACK_ENDPOINT — a Google Apps Script web-app URL that appends one row
+//      per download to a Google Sheet in your Drive. See tracking/README.md.
+//      Leave '' to disable. Paste your deployed /exec URL here to enable.
+//   2. GoatCounter   — set data-goatcounter in index.html; events fire below.
+// Every download <a> carries data-* attrs; one delegated listener reports them.
+// Tracking never blocks or breaks a download (all wrapped in try/catch).
+// ---------------------------------------------------------------------------
+const TRACK_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyg5kluonqs0eG8fO01OmbQDPqgSDZsDmcRQHHOCl6c3nwxbE_0JDUDZI5dwMmt7E5r/exec';
+
+// --- Visitor registration (name/org/goal/email), stored locally ---
+// Downloads are gated: the first download by an un-registered visitor opens the
+// registration modal; once registered (name + org), every download row carries
+// who they are. Stored in localStorage so a visitor is asked only once.
+function getUser() {
+  try { const s = localStorage.getItem('lm_user'); return s ? JSON.parse(s) : null; }
+  catch (e) { return null; }
+}
+function isRegistered() {
+  const u = getUser();
+  return !!(u && u.name && u.org);
+}
+function readForm(form) {
+  const v = (n) => (form.elements[n] ? form.elements[n].value : '').trim();
+  return { name: v('name'), org: v('org'), goal: v('goal'), email: v('email') };
+}
+// Save + log a registration row. Returns the stored user.
+function register(data) {
+  const u = { name: data.name || '', org: data.org || '', goal: data.goal || '', email: data.email || '' };
+  try { localStorage.setItem('lm_user', JSON.stringify(u)); } catch (e) {}
+  try {
+    if (TRACK_ENDPOINT && navigator.sendBeacon) {
+      navigator.sendBeacon(TRACK_ENDPOINT, JSON.stringify({
+        event: 'register', user_name: u.name, org: u.org, goal: u.goal, email: u.email,
+        ref: location.href
+      }));
+    }
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({ path: 'register', title: 'Register: ' + (u.org || u.name), event: true });
+    }
+  } catch (e) { /* best-effort */ }
+  return u;
+}
+
+function trackDownload(d) {
+  // d = { huc, name, prod, scope } from the clicked link's data-* attributes.
+  const u = getUser() || {};
+  try {
+    if (TRACK_ENDPOINT && navigator.sendBeacon) {
+      navigator.sendBeacon(TRACK_ENDPOINT, JSON.stringify({
+        event: 'download',
+        user_name: u.name || '', org: u.org || '', goal: u.goal || '', email: u.email || '',
+        huc: d.huc || '', feature: d.name || '', prod: d.prod || '', scope: d.scope || '',
+        ref: location.href
+      }));
+    }
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({
+        path: 'dl/' + (d.scope || 'x') + '/' + (d.prod || 'x') + (d.huc ? '/' + d.huc : ''),
+        title: 'Download: ' + (d.name || d.prod || 'file'),
+        event: true
+      });
+    }
+  } catch (e) { /* tracking is best-effort; never interrupt the download */ }
+}
+
+// Delegated download handler. If the visitor is registered, the link opens
+// normally and we log it. Otherwise we stop the link, stash it, and open the
+// registration modal; completing the form resumes the download.
+let pendingDownload = null;
+document.addEventListener('click', (e) => {
+  const a = e.target.closest && e.target.closest('a[data-dl]');
+  if (!a) return;
+  if (isRegistered()) { trackDownload(a.dataset); return; }
+  e.preventDefault();
+  pendingDownload = { href: a.href, dataset: Object.assign({}, a.dataset) };
+  openRegModal();
+});
+
+// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 function prettySize(bytes) {
@@ -42,10 +123,19 @@ function prettySize(bytes) {
   return b + ' B';
 }
 
-function linkRow(label, url, size) {
+function escAttr(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+}
+
+function linkRow(label, url, size, meta) {
   const sz = size ? ` <span class="sz">(${prettySize(size)})</span>` : '';
   if (!url) return `<li class="pending">${label} <span class="sz">(link pending)</span></li>`;
-  return `<li><a href="${url}" target="_blank" rel="noopener">${label}</a>${sz}</li>`;
+  const data = meta
+    ? ` data-dl="1" data-huc="${escAttr(meta.huc)}" data-name="${escAttr(meta.name)}"` +
+      ` data-prod="${escAttr(meta.prod)}" data-scope="${escAttr(meta.scope)}"`
+    : '';
+  return `<li><a href="${url}" target="_blank" rel="noopener"${data}>${label}</a>${sz}</li>`;
 }
 
 // Classify a watershed's product list into full / partial.
@@ -163,7 +253,9 @@ function watershedPopup(props) {
   if (!entry || !entry.products || !entry.products.length) {
     return `<h3>${title}</h3><p class="muted">No published products for this watershed.</p>`;
   }
-  const items = entry.products.map((p) => linkRow(p.label, p.drive_url, p.size)).join('');
+  const items = entry.products.map((p) =>
+    linkRow(p.label, p.drive_url, p.size,
+      { huc, name: entry.name, prod: p.type, scope: 'watershed' })).join('');
 
   // "View on map" — only for confidence layers we have an overlay for.
   const canHigh = entry.products.some((p) => p.type === 'high');
@@ -181,7 +273,8 @@ function watershedPopup(props) {
   if (entry.forest && MANIFEST.grouped && MANIFEST.grouped.forests) {
     const f = MANIFEST.grouped.forests.find((x) => x.name === entry.forest);
     if (f) forestHtml = `<div class="forest"><strong>${entry.forest}</strong>` +
-      `<ul class="links">${linkRow(f.label, f.drive_url, f.size)}</ul></div>`;
+      `<ul class="links">${linkRow(f.label, f.drive_url, f.size,
+        { huc, name: entry.forest, prod: 'forest', scope: 'forest' })}</ul></div>`;
   }
   return `<h3>${title}</h3><ul class="links">${items}</ul>${vizHtml}${forestHtml}`;
 }
@@ -194,17 +287,20 @@ function renderBulk() {
   const parts = [];
   if (g.statewide && g.statewide.length) {
     parts.push('<div class="bulk-group"><strong>Statewide (all watersheds)</strong><ul class="links">' +
-      g.statewide.map((s) => linkRow(s.label, s.drive_url, s.size)).join('') + '</ul></div>');
+      g.statewide.map((s) => linkRow(s.label, s.drive_url, s.size,
+        { prod: s.type, scope: 'statewide' })).join('') + '</ul></div>');
   }
   if (g.full) {
     parts.push('<div class="bulk-group"><strong>Complete database</strong><ul class="links">' +
-      linkRow(g.full.label, g.full.drive_url, g.full.size) + '</ul></div>');
+      linkRow(g.full.label, g.full.drive_url, g.full.size,
+        { prod: 'full', scope: 'full' }) + '</ul></div>');
   }
   if (g.forests && g.forests.length) {
     parts.push('<details class="bulk-group"><summary>Forest GeoPackages (' + g.forests.length + ')</summary>' +
       '<ul class="links">' + g.forests
         .slice().sort((a, b) => (a.name || '').localeCompare(b.name || ''))
-        .map((f) => linkRow(f.label, f.drive_url, f.size)).join('') + '</ul></details>');
+        .map((f) => linkRow(f.label, f.drive_url, f.size,
+          { name: f.name, prod: 'forest', scope: 'forest' })).join('') + '</ul></details>');
   }
   document.getElementById('bulk-links').innerHTML =
     parts.length ? parts.join('') : '<span class="muted">none</span>';
@@ -363,11 +459,64 @@ document.querySelectorAll('input[data-pred]').forEach((input) => {
 });
 
 // Intro splash — shown on every load until dismissed; reopen via "About this map".
+// Carries the registration form (optional here; enforced at first download).
 const splash = document.getElementById('splash');
 if (splash) {
   const hideSplash = () => splash.classList.add('hidden');
+  const splashForm = document.getElementById('splash-form');
+  prefillForm(splashForm);
   document.getElementById('splash-close').addEventListener('click', hideSplash);
-  document.getElementById('splash-enter').addEventListener('click', hideSplash);
+  // "Enter the map": register if name + org are filled, otherwise just browse
+  // (the download gate will ask later). Either way, dismiss the splash.
+  if (splashForm) splashForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = readForm(splashForm);
+    if (data.name && data.org) register(data);
+    hideSplash();
+  });
   const about = document.getElementById('about-link');
-  if (about) about.addEventListener('click', (e) => { e.preventDefault(); splash.classList.remove('hidden'); });
+  if (about) about.addEventListener('click', (e) => {
+    e.preventDefault(); prefillForm(splashForm); splash.classList.remove('hidden');
+  });
+}
+
+// Download-gate registration modal.
+const regModal = document.getElementById('reg-modal');
+function openRegModal() {
+  if (!regModal) return;
+  const form = document.getElementById('reg-form');
+  prefillForm(form);
+  const err = document.getElementById('reg-error');
+  if (err) err.hidden = true;
+  regModal.classList.remove('hidden');
+  const first = form && form.elements['name'];
+  if (first) setTimeout(() => first.focus(), 50);
+}
+function closeRegModal() { if (regModal) regModal.classList.add('hidden'); }
+function prefillForm(form) {
+  if (!form) return;
+  const u = getUser(); if (!u) return;
+  ['name', 'org', 'goal', 'email'].forEach((k) => {
+    if (form.elements[k] && !form.elements[k].value) form.elements[k].value = u[k] || '';
+  });
+}
+if (regModal) {
+  const regForm = document.getElementById('reg-form');
+  const err = document.getElementById('reg-error');
+  document.getElementById('reg-close').addEventListener('click', () => { pendingDownload = null; closeRegModal(); });
+  document.getElementById('reg-cancel').addEventListener('click', () => { pendingDownload = null; closeRegModal(); });
+  regForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = readForm(regForm);
+    if (!data.name || !data.org) { if (err) err.hidden = false; return; }
+    register(data);
+    closeRegModal();
+    // Resume the download that triggered the gate (still within this click, so
+    // window.open is not treated as a popup).
+    if (pendingDownload) {
+      trackDownload(pendingDownload.dataset);
+      window.open(pendingDownload.href, '_blank', 'noopener');
+      pendingDownload = null;
+    }
+  });
 }

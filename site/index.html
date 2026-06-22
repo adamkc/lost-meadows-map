@@ -53,7 +53,43 @@
         <li><a href="https://research.fs.usda.gov/treesearch/66206" target="_blank" rel="noopener">Pope &amp; Cummings (2023), <em>Recovering the lost potential of meadows…</em></a> — applied approaches and use cases.</li>
       </ul>
 
-      <button id="splash-enter" class="splash-enter" type="button">Explore the map</button>
+      <h3>Register to download</h3>
+      <p class="reg-note">The downloads are free. Before your first download we ask for your name
+        and organization so we can report how these data are used to the programs that fund this
+        work. Fill this in now, or browse first and we will ask before your first download.</p>
+      <form id="splash-form" class="reg-form" novalidate>
+        <label>Name<input name="name" type="text" autocomplete="name"></label>
+        <label>Organization<input name="org" type="text" autocomplete="organization"></label>
+        <label>Intended use<input name="goal" type="text"
+          placeholder="Restoration planning, research, education…"></label>
+        <label>Email <span class="opt">(optional)</span><input name="email" type="email"
+          placeholder="you@example.org" autocomplete="email"></label>
+        <button type="submit" class="splash-enter">Enter the map</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Download gate: shown the first time an un-registered visitor clicks a download link. -->
+  <div id="reg-modal" class="splash-overlay hidden">
+    <div class="splash-card reg-card" role="dialog" aria-modal="true" aria-labelledby="reg-title">
+      <button id="reg-close" class="splash-close" type="button" aria-label="Close">&times;</button>
+      <h2 id="reg-title">Tell us who you are</h2>
+      <p>These predictions are a public planning aid. Before downloading, please share a little
+        about who you are and how you will use them. It helps us report usage to the programs that
+        fund this work.</p>
+      <form id="reg-form" class="reg-form" novalidate>
+        <label>Name <span class="req">*</span><input name="name" type="text" required autocomplete="name"></label>
+        <label>Organization <span class="req">*</span><input name="org" type="text" required autocomplete="organization"></label>
+        <label>Intended use<input name="goal" type="text"
+          placeholder="Restoration planning, research, education…"></label>
+        <label>Email <span class="opt">(optional)</span><input name="email" type="email"
+          placeholder="you@example.org" autocomplete="email"></label>
+        <p id="reg-error" class="reg-error" hidden>Please enter your name and organization.</p>
+        <div class="reg-actions">
+          <button type="submit" class="splash-enter">Submit &amp; download</button>
+          <button type="button" id="reg-cancel" class="reg-cancel">Cancel</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -102,5 +138,15 @@
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
   <script src="https://unpkg.com/pmtiles@3.0.6/dist/pmtiles.js"></script>
   <script src="app.js"></script>
+
+  <!-- Analytics + download tracking (GoatCounter). Disabled until configured.
+       To enable: create a free site at https://www.goatcounter.com/, then replace
+       MYCODE below with your site code and uncomment this tag. It counts page
+       visits automatically and download events (fired from app.js). See
+       tracking/README.md for the full setup (incl. the Google Sheet logger). -->
+  <!--
+  <script data-goatcounter="https://MYCODE.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+  -->
 </body>
 </html>

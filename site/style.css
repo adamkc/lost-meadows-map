@@ -150,6 +150,29 @@ details.bulk-group ul { max-height: 200px; overflow-y: auto; }
 .splash-enter:hover { background: #284b78; }
 #about-link { color: #3b6e8f; cursor: pointer; }
 
+/* ---- Registration form (splash + download-gate modal) ---- */
+.reg-card { max-width: 440px; }
+.reg-note { font-size: 13px; color: #555; }
+.reg-form { margin-top: 14px; display: grid; gap: 9px; }
+.reg-form label { display: grid; gap: 3px; font-size: 13px; font-weight: 600; color: #2a2a2a; }
+.reg-form input {
+  padding: 7px 9px; border: 1px solid #c4ccd4; border-radius: 5px; font-size: 14px;
+  font-weight: 400; width: 100%; box-sizing: border-box;
+}
+.reg-form input:focus {
+  outline: none; border-color: #1f3a5f; box-shadow: 0 0 0 2px rgba(31, 58, 95, 0.15);
+}
+.reg-form .splash-enter { margin-top: 4px; justify-self: start; }
+.reg-form .req { color: #c0392b; font-weight: 700; }
+.reg-form .opt { color: #999; font-weight: 400; }
+.reg-error { color: #c0392b; font-size: 13px; margin: 0; }
+.reg-actions { display: flex; gap: 10px; align-items: center; margin-top: 4px; }
+.reg-cancel {
+  background: transparent; border: 1px solid #c4ccd4; border-radius: 6px;
+  padding: 8px 16px; font-size: 14px; cursor: pointer; color: #555;
+}
+.reg-cancel:hover { background: #f0f1f3; }
+
 @media (max-width: 600px) {
   .splash-card { padding: 20px 18px; font-size: 13px; }
   .splash-card h2 { font-size: 18px; }

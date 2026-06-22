@@ -11,8 +11,22 @@
 # source for BOTH the overlay and the statewide download.
 # ===========================================================================
 
+# Clean one watershed's raster-derived polygons: union -> morphological close
+# (merge adjacent speckle into neighbors, fill pinholes) -> simplify -> drop only
+# truly-isolated tiny parts. Returns one HUC10-tagged MULTIPOLYGON (EPSG:4326).
+.clean_watershed <- function(x) {
+  g <- st_union(st_geometry(st_transform(x, 5070)))     # metric CRS; merge all parts
+  g <- st_buffer(g, VIZ_CLOSE_M)
+  g <- st_buffer(g, -VIZ_CLOSE_M)                        # closing
+  g <- st_simplify(g, dTolerance = VIZ_SIMPLIFY_M, preserveTopology = TRUE)
+  parts <- st_cast(g, "POLYGON")
+  parts <- parts[as.numeric(st_area(parts)) >= VIZ_MIN_ISOLATED_M2]
+  if (!length(parts)) return(NULL)
+  st_transform(st_combine(parts), 4326)
+}
+
 .merge_to_geojson <- function(rows, product, out_geojson) {
-  suppressPackageStartupMessages({ library(sf); library(rmapshaper) })
+  suppressPackageStartupMessages({ library(sf) })
   rows <- rows[rows$product == product & !is.na(rows$source_path) & nzchar(rows$source_path), ]
   pieces <- vector("list", nrow(rows)); k <- 0L
   for (i in seq_len(nrow(rows))) {
@@ -20,12 +34,10 @@
     if (!file.exists(shp)) next
     x <- tryCatch(st_make_valid(st_read(shp, quiet = TRUE)), error = function(e) NULL)
     if (is.null(x) || !nrow(x)) next
-    if (is.na(st_crs(x)$epsg) || st_crs(x)$epsg != 4326) x <- st_transform(x, 4326)
-    g <- st_sf(geometry = st_geometry(x))
-    g <- tryCatch(ms_simplify(g, keep = VIZ_SIMPLIFY_KEEP, method = "vis",
-                              keep_shapes = TRUE, explode = FALSE), error = function(e) g)
+    geom <- tryCatch(.clean_watershed(x), error = function(e) NULL)
+    if (is.null(geom) || all(st_is_empty(geom))) next
     k <- k + 1L
-    pieces[[k]] <- st_sf(huc10 = rows$huc10[i], geometry = st_geometry(g))
+    pieces[[k]] <- st_sf(huc10 = rows$huc10[i], geometry = geom)
   }
   pieces <- pieces[seq_len(k)]
   if (!k) { cat("  no", product, "polygons found\n"); return(FALSE) }
@@ -44,7 +56,9 @@
   }
   if (file.exists(pmtiles)) file.remove(pmtiles)
   sf::gdal_utils("vectortranslate", geojson, pmtiles,
-    options = c("-f", "PMTiles", "-nln", "predictions",
+    options = c("-explodecollections",   # split per-watershed multipolygons -> polygons
+                                          # (the MVT tiler overflows its C stack on big ones)
+                "-f", "PMTiles", "-nln", "predictions",
                 "-dsco", paste0("MINZOOM=", VIZ_MINZOOM), "-dsco", paste0("MAXZOOM=", VIZ_MAXZOOM),
                 "-dsco", "SIMPLIFICATION=8", "-dsco", "SIMPLIFICATION_MAX_ZOOM=4",
                 "-dsco", "MAX_SIZE=500000", "-dsco", "MAX_FEATURES=100000"))

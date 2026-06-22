@@ -103,12 +103,18 @@ function trackDownload(d) {
 // registration modal; completing the form resumes the download.
 let pendingDownload = null;
 document.addEventListener('click', (e) => {
-  const a = e.target.closest && e.target.closest('a[data-dl]');
-  if (!a) return;
-  if (isRegistered()) { trackDownload(a.dataset); return; }
-  e.preventDefault();
-  pendingDownload = { href: a.href, dataset: Object.assign({}, a.dataset) };
-  openRegModal();
+  if (!e.target.closest) return;
+  const dl = e.target.closest('a[data-dl]');
+  if (dl) {
+    if (isRegistered()) { trackDownload(dl.dataset); return; }
+    e.preventDefault();
+    pendingDownload = { href: dl.href, dataset: Object.assign({}, dl.dataset) };
+    openRegModal();
+    return;
+  }
+  // Request links (un-analyzed watersheds) open the mailto normally; just log.
+  const rq = e.target.closest('a[data-req]');
+  if (rq) trackRequest(rq.dataset.huc, rq.dataset.name);
 });
 
 // ---------------------------------------------------------------------------
@@ -183,6 +189,14 @@ const PRED = {
 };
 const PRED_SOURCE_LAYER = 'predictions';
 const predState = { high: { loaded: false }, medium: { loaded: false } };
+
+// "Not yet analyzed" watersheds (western US) — PMTiles vector tiles, drawn under
+// the analyzed layer. Clicking one opens a mailto to request its outputs.
+const UNANALYZED = {
+  url: 'pmtiles://data/huc10_unanalyzed.pmtiles',
+  sourceLayer: 'unanalyzed',
+  email: 'acummings@thewatershedcenter.com'
+};
 
 async function ensurePred(conf) {
   if (predState[conf].loaded) return;
@@ -279,6 +293,41 @@ function watershedPopup(props) {
   return `<h3>${title}</h3><ul class="links">${items}</ul>${vizHtml}${forestHtml}`;
 }
 
+// Popup for an un-analyzed watershed: a prefilled mailto to request its outputs.
+function requestPopup(props) {
+  const huc = props.huc10 || '';
+  const name = props.name || 'This watershed';
+  const subject = 'Request Lost Meadows outputs for HUC ' + huc;
+  const body = 'Hi Adam,\n\nPlease send the Lost Meadows model outputs for HUC10 ' + huc +
+    (props.name ? ' (' + props.name + ')' : '') +
+    '.\n\nName:\nOrganization:\nIntended use:\n\nThank you.';
+  const mailto = 'mailto:' + UNANALYZED.email +
+    '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  return `<h3>${name} <span class="huc">${huc}</span></h3>` +
+    `<p class="muted">Not analyzed yet — no published outputs for this watershed.</p>` +
+    `<p><a href="${mailto}" class="req-link" data-req="1" data-huc="${escAttr(huc)}" ` +
+      `data-name="${escAttr(name)}">Email to request outputs</a></p>` +
+    `<p class="req-note">Or email <strong>${UNANALYZED.email}</strong> with the code ` +
+      `<strong>${huc}</strong>.</p>`;
+}
+
+// Log a request (event=request) when someone clicks the "Email to request" link.
+function trackRequest(huc, name) {
+  const u = getUser() || {};
+  try {
+    if (TRACK_ENDPOINT && navigator.sendBeacon) {
+      navigator.sendBeacon(TRACK_ENDPOINT, JSON.stringify({
+        event: 'request', user_name: u.name || '', org: u.org || '', goal: u.goal || '',
+        email: u.email || '', huc: huc || '', feature: name || '', prod: 'request',
+        scope: 'unanalyzed', ref: location.href
+      }));
+    }
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({ path: 'request/' + (huc || 'x'), title: 'Request: ' + (name || huc), event: true });
+    }
+  } catch (e) { /* best-effort */ }
+}
+
 // ---------------------------------------------------------------------------
 // Bulk-downloads panel
 // ---------------------------------------------------------------------------
@@ -324,6 +373,32 @@ map.on('load', () => {
       const e = manifest.watersheds[f.properties.huc10];
       f.properties.avail = availability(e && e.products);
     }
+
+    // "Not yet analyzed" watersheds first, so the analyzed layer sits on top.
+    map.addSource('unanalyzed', { type: 'vector', url: UNANALYZED.url });
+    map.addLayer({
+      id: 'unanalyzed-fill', type: 'fill', source: 'unanalyzed', 'source-layer': UNANALYZED.sourceLayer,
+      paint: {
+        'fill-color': '#9aa0a6',
+        'fill-opacity': ['interpolate', ['linear'], ['zoom'], 4, 0.12, 8, 0.07, 11, 0.04]
+      }
+    });
+    map.addLayer({
+      id: 'unanalyzed-line', type: 'line', source: 'unanalyzed', 'source-layer': UNANALYZED.sourceLayer,
+      paint: {
+        'line-color': '#7b818a', 'line-opacity': 0.55,
+        'line-width': ['interpolate', ['linear'], ['zoom'], 4, 0.3, 8, 0.6, 11, 0.9],
+        'line-dasharray': [2, 2]
+      }
+    });
+    map.on('mouseenter', 'unanalyzed-fill', () => { map.getCanvas().style.cursor = 'pointer'; });
+    map.on('mouseleave', 'unanalyzed-fill', () => { map.getCanvas().style.cursor = ''; });
+    map.on('click', 'unanalyzed-fill', (e) => {
+      const f = e.features && e.features[0];
+      if (!f) return;
+      new maplibregl.Popup({ closeButton: true, maxWidth: '300px' })
+        .setLngLat(e.lngLat).setHTML(requestPopup(f.properties)).addTo(map);
+    });
 
     map.addSource('huc', { type: 'geojson', data: geo, generateId: true });
     map.addLayer({
@@ -436,6 +511,14 @@ document.querySelectorAll('input[name="basemap"]').forEach((input) => {
     for (const id of basemapIds)
       map.setLayoutProperty(id, 'visibility', id === activeId ? 'visible' : 'none');
   });
+});
+
+// Toggle the "not yet analyzed" request layer.
+const unToggle = document.getElementById('toggle-unanalyzed');
+if (unToggle) unToggle.addEventListener('change', (ev) => {
+  const v = ev.target.checked ? 'visible' : 'none';
+  for (const id of ['unanalyzed-fill', 'unanalyzed-line'])
+    if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', v);
 });
 
 // Prediction overlay checkboxes — toggle high/medium for the selected watershed.

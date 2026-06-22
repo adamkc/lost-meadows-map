@@ -31,6 +31,17 @@ PRED_MED_PMTILES  <- file.path(SITE_DATA, "predictions_medium.pmtiles")
 STATEWIDE_HIGH_GPKG <- "statewide_SN_high.gpkg"
 STATEWIDE_MED_GPKG  <- "statewide_SN_medium.gpkg"
 
+# "Not yet analyzed" request layer: every HUC10 touching the western states,
+# minus the analyzed set, server-side generalized and tiled to PMTiles. Clicking
+# one on the map opens a mailto to request that watershed's outputs.
+UNANALYZED_STATES  <- c("CA", "OR", "WA", "NV", "ID")
+UNANALYZED_GEOJSON <- file.path(SITE_DATA, "huc10_unanalyzed.geojson")   # gitignored intermediate
+UNANALYZED_PMTILES <- file.path(SITE_DATA, "huc10_unanalyzed.pmtiles")   # committed vector tiles
+UNANALYZED_OFFSET  <- 0.002    # WBD maxAllowableOffset (degrees, ~200 m generalization)
+UNANALYZED_MINZOOM <- 3
+UNANALYZED_MAXZOOM <- 10
+UNANALYZED_EMAIL   <- "acummings@thewatershedcenter.com"   # request contact
+
 # ---- Source trees ----------------------------------------------------------
 WORK_ROOT   <- "C:/Users/adamk/Documents/Work/Lost Meadows RF"          # newer "60SN"
 BACKUP_ROOT <- "D:/My Documents Backup/Lost Meadow RF"                  # older "60Global/local"
@@ -79,9 +90,13 @@ CORE_EXCLUDE         <- c("1801021101", "1801021102", "1801021103", "1801021104"
 STATEWIDE_SIMPLIFY_KEEP <- 0.15
 # Boundary polygon simplification for the web map.
 BOUNDARY_SIMPLIFY_KEEP  <- 0.04
-# Prediction overlay simplification (on-map "view polygons" — lighter than the
-# downloadable statewide product since it's purely visual).
-VIZ_SIMPLIFY_KEEP       <- 0.10
+# Prediction overlay/statewide cleanup of raster-derived polygons: morphological
+# closing (buffer +d then -d) merges adjacent speckles into neighbors and fills
+# pinholes; then drop only truly-isolated tiny parts; then simplify. Distances in
+# metres (geometry is reprojected to EPSG:5070 for these ops).
+VIZ_CLOSE_M          <- 20     # closing distance
+VIZ_MIN_ISOLATED_M2  <- 500    # drop isolated parts smaller than this (0.05 ha)
+VIZ_SIMPLIFY_M       <- 10     # post-closing Douglas-Peucker tolerance
 # Vector-tile (PMTiles) zoom range for the prediction overlay. MINZOOM low
 # enough that the "show all" overlay is visible at the multi-state overview.
 VIZ_MINZOOM <- 3

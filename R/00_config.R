@@ -34,7 +34,7 @@ STATEWIDE_MED_GPKG  <- "statewide_SN_medium.gpkg"
 # "Not yet analyzed" request layer: every HUC10 touching the western states,
 # minus the analyzed set, server-side generalized and tiled to PMTiles. Clicking
 # one on the map opens a mailto to request that watershed's outputs.
-UNANALYZED_STATES  <- c("CA", "OR", "WA", "NV", "ID")
+UNANALYZED_STATES  <- c("CA", "OR", "WA", "NV", "ID", "WY", "CO")
 UNANALYZED_GEOJSON <- file.path(SITE_DATA, "huc10_unanalyzed.geojson")   # gitignored intermediate
 UNANALYZED_PMTILES <- file.path(SITE_DATA, "huc10_unanalyzed.pmtiles")   # committed vector tiles
 UNANALYZED_OFFSET  <- 0.002    # WBD maxAllowableOffset (degrees, ~200 m generalization)

@@ -1,6 +1,7 @@
 # Heavy datasets — staged copies/zips/rasters bound for Google Drive, never versioned.
 staging/
 logs/
+_inbox/          # drop zone for new predictions (process_inbox.bat); inputs + _done archive
 
 # Bulk geospatial outputs (the small site/data/*.geojson + manifest.json ARE committed;
 # these patterns only catch stray large files dropped elsewhere in the tree).

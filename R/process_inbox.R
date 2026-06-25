@@ -30,6 +30,16 @@ for (f in sprintf("%02d_%s.R", c(0, 1, 2, 3, 4, 5, 8, 7, 10, 11),
   source(file.path(R_DIR, f))
 suppressPackageStartupMessages({ library(sf); library(rmapshaper) })
 
+# Heavy PMTiles tiling must run in a FRESH R process — the GDAL MVT tiler is
+# C-stack-heavy and overflows when run in this long-lived session after the
+# boundary/forest/clean geometry work. run_fresh() shells out to a clean Rscript.
+RSCRIPT_BIN <- file.path(R.home("bin"), if (.Platform$OS.type == "windows") "Rscript.exe" else "Rscript")
+run_fresh <- function(script, ...) {
+  args <- c(shQuote(file.path(R_DIR, script)), vapply(list(...), shQuote, character(1)))
+  st <- system2(RSCRIPT_BIN, args = args)
+  if (st != 0) stop("subprocess ", script, " failed (exit ", st, ")")
+}
+
 INBOX_DIR  <- file.path(PROJECT_DIR, "_inbox")
 INBOX_DONE <- file.path(INBOX_DIR, "_done")
 RESULT_TXT <- file.path(LOGS_DIR, "inbox_result.txt")   # marker the .bat reads
@@ -96,14 +106,7 @@ st_write(B, BOUNDARY_GEOJSON, driver = "GeoJSON", quiet = TRUE,
 cat(sprintf("  huc10.geojson: %d features; %d stamped added=%s\n", nrow(B), length(new_hucs), TODAY))
 
 # ---- 3. Overlay: rebuild each statewide gpkg = (existing - new) + new, tile -
-.tile_from_gpkg <- function(gpkg, pmtiles) {
-  if (file.exists(pmtiles)) file.remove(pmtiles)
-  sf::gdal_utils("vectortranslate", gpkg, pmtiles,
-    options = c("-explodecollections", "-f", "PMTiles", "-nln", "predictions",
-                "-dsco", paste0("MINZOOM=", VIZ_MINZOOM), "-dsco", paste0("MAXZOOM=", VIZ_MAXZOOM),
-                "-dsco", "SIMPLIFICATION=8", "-dsco", "SIMPLIFICATION_MAX_ZOOM=4",
-                "-dsco", "MAX_SIZE=500000", "-dsco", "MAX_FEATURES=100000"))
-}
+.tile_from_gpkg <- function(gpkg, pmtiles) run_fresh("tile_gpkg.R", gpkg, pmtiles)
 update_overlay <- function(product, gpkg_name, pmtiles) {
   rows <- staged[staged$product == product, , drop = FALSE]
   gpkg <- file.path(STAGING_DIR, gpkg_name)
@@ -150,7 +153,7 @@ cat(sprintf("  manifest.csv updated (%d rows)\n", nrow(tbl)))
 # ---- 5. Request layer: re-tile so now-analyzed HUCs drop out ----------------
 # Only the analyzed set changing matters; a pure re-drop (HUC already mapped)
 # leaves it unchanged, so skip the WBD fetch + re-tile in that case.
-if (length(to_fetch)) build_unanalyzed_layer() else
+if (length(to_fetch)) run_fresh("build_request_layer.R") else
   cat("  request layer unchanged (no brand-new HUCs)\n")
 
 # ---- 6. Record result for the .bat -----------------------------------------

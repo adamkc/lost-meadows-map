@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-21",
+  "generated": "2026-06-25",
   "watersheds": {
     "1605010101": {
       "name": "Third Creek-Frontal Lake Tahoe",
@@ -5815,6 +5815,30 @@
         }
       ]
     },
+    "1802012601": {
+      "name": "Upper Bear River",
+      "forest": "Tahoe National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1uuuOBgX8K-DaPhaITqnRYzaYU61U7iUC",
+          "size": 45780
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1yTxw9lE6BycguWIDSj3ma0UtcCFS4_BH",
+          "size": 131797
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1CHWJJ6EpxOBtdInJhYY5Mid_1KrUiOZY",
+          "size": 9873941
+        }
+      ]
+    },
     "1802012801": {
       "name": "Upper North Fork American River",
       "forest": "Tahoe National Forest",
@@ -6052,6 +6076,30 @@
           "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1iDJu5jfSDlMBM98AEnEIZrLy52zUI-Cq",
           "size": 8606951
+        }
+      ]
+    },
+    "1802015102": {
+      "name": "South Cow Creek",
+      "forest": "",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1sJR3Hj51ffU4CScq1QsNtbxrVT8PiXku",
+          "size": 66270
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1lT-CoBp2kPBMM_hV7Hok78rjLBP1mgiL",
+          "size": 113688
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1cOrgTm2cCsnZkAmwl0PUIo-ZEOoLefhF",
+          "size": 7983373
         }
       ]
     },
@@ -6994,6 +7042,54 @@
           "label": "Prediction raster (GeoTIFF, local model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1VXbFLaYajK4B7kBikdNswxJWFtQvPont",
           "size": 16841461
+        }
+      ]
+    },
+    "1803000601": {
+      "name": "Middle Fork Tule River",
+      "forest": "Sequoia National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1azi9EFvb-mfwv_mRKXZmh-T0NerH7heU",
+          "size": 16257
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=11cuICVHFocjmABWrCssKiPH0ks8wQEyE",
+          "size": 47372
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1ior_XA-vF4fXGGny7pTrn44tdji39GPm",
+          "size": 9688433
+        }
+      ]
+    },
+    "1803000602": {
+      "name": "North Fork Tule River",
+      "forest": "",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1ZWYWCLAKRnRGqfcgh9s6W4l1Y95zdXnz",
+          "size": 61517
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1bZ3RZ9iPeWrGDFReFNR_nJNvQmOfmVrG",
+          "size": 129766
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1OasCskj9c3YXCo6atfuD0uEd_Xrm3iFE",
+          "size": 9107037
         }
       ]
     },
@@ -9400,15 +9496,15 @@
         "type": "high",
         "name": "",
         "label": "All Sierra Nevada high-confidence polygons (GeoPackage)",
-        "drive_url": "https://drive.google.com/file/d/1ABxqAyIyiez8OTbExaPj1hMEAmguyf_n/view",
-        "size": 163491840
+        "drive_url": "https://drive.google.com/uc?export=download&id=1ABxqAyIyiez8OTbExaPj1hMEAmguyf_n",
+        "size": 59949056
       },
       {
         "type": "medium",
         "name": "",
         "label": "All Sierra Nevada medium-confidence polygons (GeoPackage)",
-        "drive_url": "https://drive.google.com/file/d/1IkidxDZQjz2MYCi2rskmku0cGpTLAcSN/view",
-        "size": 172728320
+        "drive_url": "https://drive.google.com/uc?export=download&id=1IkidxDZQjz2MYCi2rskmku0cGpTLAcSN",
+        "size": 78475264
       }
     ],
     "full": {

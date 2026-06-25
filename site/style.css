@@ -92,6 +92,11 @@ details.bulk-group ul { max-height: 200px; overflow-y: auto; }
   margin: 0 0 6px; font-size: 13px; color: #1f3a5f; border-bottom: 1px solid #eee; padding-bottom: 4px;
 }
 .maplibregl-popup-content h3 .huc { color: #999; font-weight: 400; font-size: 11px; }
+.newtag {
+  display: inline-block; margin-left: 4px; padding: 1px 6px; border-radius: 8px;
+  background: #00bcd4; color: #fff; font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.03em; vertical-align: middle;
+}
 .maplibregl-popup-content .forest {
   margin-top: 8px; padding-top: 6px; border-top: 1px solid #eee; font-size: 12px;
 }

@@ -30,6 +30,17 @@ const basemapIds = Object.keys(basemaps).map((k) => `basemap-${k}`);
 // Availability -> fill color.
 const AVAIL_COLOR = { full: '#1a9850', partial: '#fee08b', none: '#cccccc' };
 
+// Watersheds added within this many days get a distinct "recently added" border.
+// Driven by each feature's `added` ISO date (stamped by process_inbox.R); the
+// highlight auto-expires, so the map never accumulates stale "new" flags.
+const NEW_DAYS = 30;
+const NEW_COLOR = '#00bcd4';
+function isRecentlyAdded(added) {
+  if (!added) return false;
+  const t = Date.parse(added);
+  return !isNaN(t) && (Date.now() - t) / 86400000 <= NEW_DAYS;
+}
+
 // ---------------------------------------------------------------------------
 // Download tracking (optional — logs WHICH files get downloaded, by watershed).
 // Two independent sinks; either can be left off:
@@ -262,7 +273,8 @@ function hideToast() { const t = document.getElementById('toast'); if (t) t.clas
 function watershedPopup(props) {
   const huc = props.huc10;
   const entry = MANIFEST.watersheds[huc];
-  const title = `${(entry && entry.name) || props.name || 'Watershed'} <span class="huc">${huc}</span>`;
+  const tag = props.isnew ? ' <span class="newtag">recently added</span>' : '';
+  const title = `${(entry && entry.name) || props.name || 'Watershed'} <span class="huc">${huc}</span>${tag}`;
 
   if (!entry || !entry.products || !entry.products.length) {
     return `<h3>${title}</h3><p class="muted">No published products for this watershed.</p>`;
@@ -368,10 +380,11 @@ map.on('load', () => {
     if (manifest.generated)
       document.getElementById('generated').textContent = 'Updated ' + manifest.generated;
 
-    // Inject availability onto each feature so the fill can be data-driven.
+    // Inject availability + recency onto each feature so styling can be data-driven.
     for (const f of geo.features) {
       const e = manifest.watersheds[f.properties.huc10];
       f.properties.avail = availability(e && e.products);
+      f.properties.isnew = isRecentlyAdded(f.properties.added);
     }
 
     // "Not yet analyzed" watersheds first, so the analyzed layer sits on top.
@@ -419,11 +432,17 @@ map.on('load', () => {
     map.addLayer({
       id: 'huc-line', type: 'line', source: 'huc',
       paint: {
-        // Training (core) watersheds get a distinct, heavier purple outline.
-        'line-color': ['case', ['get', 'core'], '#6a3d9a', '#33576e'],
-        'line-width': ['case', ['boolean', ['feature-state', 'hover'], false], 2.4,
-          ['case', ['get', 'core'], 1.5, 0.5]],
-        'line-opacity': ['case', ['get', 'core'], 0.95, 0.65]
+        // Recently added -> bright cyan; training (core) -> purple; else slate.
+        'line-color': ['case',
+          ['boolean', ['get', 'isnew'], false], NEW_COLOR,
+          ['get', 'core'], '#6a3d9a', '#33576e'],
+        'line-width': ['case',
+          ['boolean', ['feature-state', 'hover'], false], 2.4,
+          ['boolean', ['get', 'isnew'], false], 2.0,
+          ['get', 'core'], 1.5, 0.5],
+        'line-opacity': ['case',
+          ['boolean', ['get', 'isnew'], false], 1.0,
+          ['get', 'core'], 0.95, 0.65]
       }
     });
 

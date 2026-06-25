@@ -57,11 +57,17 @@ cat(sprintf("\n  >>> new/updated watersheds in this batch: %d  (%s)\n",
             length(new_hucs), paste(new_hucs, collapse = ", ")))
 
 # ---- 2. Boundaries: append truly-new HUCs to huc10.geojson -----------------
+# An `added` ISO date drives the front-end "recently added" border (it auto-
+# expires there after a set number of days). Every watershed in this batch (new
+# OR re-dropped/updated) gets stamped with today.
+TODAY <- as.character(Sys.Date())
 B <- st_read(BOUNDARY_GEOJSON, quiet = TRUE)
 B$huc10 <- as.character(B$huc10)
-keepcols <- intersect(c("huc10", "name", "areasqkm", "core"), names(B))
+keepcols <- c("huc10", "name", "areasqkm", "core", "added")
+for (c0 in setdiff(keepcols, names(B))) B[[c0]] <- NA   # add `added` (etc.) if absent
 to_fetch <- setdiff(new_hucs, B$huc10)
 new_lookup <- data.frame(huc10 = character(0), name = character(0), forest = character(0))
+old_man <- if (file.exists(MANIFEST_CSV)) utils::read.csv(MANIFEST_CSV, colClasses = "character") else NULL
 
 if (length(to_fetch)) {
   cat(sprintf("  fetching %d new boundary polygon(s) from WBD...\n", length(to_fetch)))
@@ -72,21 +78,22 @@ if (length(to_fetch)) {
   forests <- .forest_lookup(w)
   w_simp  <- ms_simplify(w, keep = BOUNDARY_SIMPLIFY_KEEP, method = "vis", keep_shapes = TRUE, explode = FALSE)
   for (c0 in setdiff(keepcols, names(w_simp))) w_simp[[c0]] <- NA   # align columns
-  B2 <- rbind(B[, keepcols], w_simp[, keepcols])
-  if (file.exists(BOUNDARY_GEOJSON)) file.remove(BOUNDARY_GEOJSON)
-  st_write(B2, BOUNDARY_GEOJSON, driver = "GeoJSON", quiet = TRUE,
-           layer_options = c("COORDINATE_PRECISION=5", "RFC7946=YES"))
-  cat(sprintf("  huc10.geojson now %d features (+%d)\n", nrow(B2), nrow(w_simp)))
+  B <- rbind(B[, keepcols], w_simp[, keepcols])
   new_lookup <- rbind(new_lookup,
     data.frame(huc10 = w$huc10, name = w$name, forest = unname(forests[w$huc10]), stringsAsFactors = FALSE))
 }
-# For re-drops (HUC already mapped): reuse existing name (geojson) + forest (manifest).
-old_man <- if (file.exists(MANIFEST_CSV)) utils::read.csv(MANIFEST_CSV, colClasses = "character") else NULL
+# Re-drops (HUC already mapped): reuse existing name (geojson) + forest (manifest).
 for (h in setdiff(new_hucs, new_lookup$huc10)) {
   nm <- as.character(B$name[match(h, B$huc10)])
   fo <- if (!is.null(old_man)) old_man$forest[match(h, old_man$huc10)] else NA_character_
   new_lookup <- rbind(new_lookup, data.frame(huc10 = h, name = nm, forest = fo, stringsAsFactors = FALSE))
 }
+
+B$added[B$huc10 %in% new_hucs] <- TODAY            # flag this batch as recently added
+if (file.exists(BOUNDARY_GEOJSON)) file.remove(BOUNDARY_GEOJSON)
+st_write(B, BOUNDARY_GEOJSON, driver = "GeoJSON", quiet = TRUE,
+         layer_options = c("COORDINATE_PRECISION=5", "RFC7946=YES"))
+cat(sprintf("  huc10.geojson: %d features; %d stamped added=%s\n", nrow(B), length(new_hucs), TODAY))
 
 # ---- 3. Overlay: rebuild each statewide gpkg = (existing - new) + new, tile -
 .tile_from_gpkg <- function(gpkg, pmtiles) {

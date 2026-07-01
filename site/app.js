@@ -391,6 +391,7 @@ map.on('load', () => {
     map.addSource('unanalyzed', { type: 'vector', url: UNANALYZED.url });
     map.addLayer({
       id: 'unanalyzed-fill', type: 'fill', source: 'unanalyzed', 'source-layer': UNANALYZED.sourceLayer,
+      layout: { visibility: 'none' },   // off by default; toggled via the legend checkbox
       paint: {
         'fill-color': '#9aa0a6',
         'fill-opacity': ['interpolate', ['linear'], ['zoom'], 4, 0.12, 8, 0.07, 11, 0.04]
@@ -398,6 +399,7 @@ map.on('load', () => {
     });
     map.addLayer({
       id: 'unanalyzed-line', type: 'line', source: 'unanalyzed', 'source-layer': UNANALYZED.sourceLayer,
+      layout: { visibility: 'none' },
       paint: {
         'line-color': '#7b818a', 'line-opacity': 0.55,
         'line-width': ['interpolate', ['linear'], ['zoom'], 4, 0.3, 8, 0.6, 11, 0.9],

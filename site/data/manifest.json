@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-25",
+  "generated": "2026-07-28",
   "watersheds": {
     "1605010101": {
       "name": "Third Creek-Frontal Lake Tahoe",
@@ -5473,6 +5473,30 @@
         }
       ]
     },
+    "1802012302": {
+      "name": "Smithneck Creek",
+      "forest": "Tahoe National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1dzCHCD9W8gBwuVQiTbLljR6qTpJaQPTB",
+          "size": 76160
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=14VWCzp9_gAHiSYKAHMZLKF11IQJReJIs",
+          "size": 115624
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1JrWXdbSoFLcWHMS4Y-NaatZpDOdTXVx5",
+          "size": 6777103
+        }
+      ]
+    },
     "1802012303": {
       "name": "Sierra Valley",
       "forest": "",
@@ -5577,13 +5601,19 @@
           "type": "high",
           "label": "High-confidence polygons (Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=19VPyQnWwoGjw-yUgEFKKrRL2aMRWK083",
-          "size": 55786
+          "size": 248184
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1eVG1Q7Ug0HXnT2xBecer1vUrFRQf3AM9",
+          "size": 400884
         },
         {
           "type": "raster",
           "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1zQzo8nvwutFT573_y399a5HzKQ8ryCSY",
-          "size": 22364042
+          "size": 22428601
         }
       ]
     },
@@ -6703,6 +6733,30 @@
         }
       ]
     },
+    "1802015705": {
+      "name": "Big Chico Creek",
+      "forest": "",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1oQb3pCzsN5ffSWl9mVc7JO1ObG0NzW2q",
+          "size": 71342
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=10t_m2z91zlOwdBpXtGJOBIuEhkjn-iVf",
+          "size": 57218
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=14x3Hwb2LW9heBLDWaOIo4YMbuHlMCQxg",
+          "size": 9500423
+        }
+      ]
+    },
     "1802015706": {
       "name": "Mud Creek",
       "forest": "",
@@ -6724,6 +6778,30 @@
           "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=11fZOe7iuUkKLlfVMjyEMUR7rNPYV4L7n",
           "size": 13168201
+        }
+      ]
+    },
+    "1802015801": {
+      "name": "Upper Butte Creek",
+      "forest": "",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1H3_yxpLzTZ5w4ktbF3uRdt2vfHMxOCFM",
+          "size": 70502
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1X4zVb7CBOMHpy5DMs9VQzMGv4M83WAEs",
+          "size": 133155
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1QMi6Pybpuu3nbPc3FJqQsjh0xlUQkS_s",
+          "size": 9622399
         }
       ]
     },
@@ -8797,6 +8875,30 @@
         }
       ]
     },
+    "1805000601": {
+      "name": "Pescadero Creek",
+      "forest": "",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1ZS5mxiqxAf0Er6_abttanV4XDtGYQOA4",
+          "size": 45752
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1zWdQX_9dBs24stKcSUrRQ6oxv9E8pGHA",
+          "size": 93450
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1TKGumFSlJqSL0MPoUFJt-oCAXgfFN6Sa",
+          "size": 7093117
+        }
+      ]
+    },
     "1807020203": {
       "name": "Lower San Jacinto River",
       "forest": "",
@@ -9497,14 +9599,14 @@
         "name": "",
         "label": "All Sierra Nevada high-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1ABxqAyIyiez8OTbExaPj1hMEAmguyf_n",
-        "size": 59949056
+        "size": 60227584
       },
       {
         "type": "medium",
         "name": "",
         "label": "All Sierra Nevada medium-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1IkidxDZQjz2MYCi2rskmku0cGpTLAcSN",
-        "size": 78475264
+        "size": 79073280
       }
     ],
     "full": {

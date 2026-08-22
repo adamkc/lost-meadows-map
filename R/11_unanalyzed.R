@@ -14,6 +14,9 @@
 # generalized server-side (maxAllowableOffset) so the payload stays small.
 .fetch_wbd_states <- function(states, offset) {
   suppressPackageStartupMessages(library(sf))
+  # WBD pages of 2000 generalized polygons routinely exceed the 60s default.
+  old_timeout <- getOption("timeout"); options(timeout = 300)
+  on.exit(options(timeout = old_timeout), add = TRUE)
   # Explicit percent-encoding: URLencode mis-handles the LIKE '%XX%' wildcards
   # (it reads '%CA' as an already-encoded byte). Encode '%' FIRST, then quotes
   # and spaces, so the wildcards survive as %25 for the server.
@@ -29,12 +32,26 @@
                           "&maxAllowableOffset=%s&outSR=4326&resultOffset=%d",
                           "&resultRecordCount=%d&f=geojson"),
                    WBD_HUC10_QUERY, where, format(offset, scientific = FALSE), start, page)
-    tmp <- tempfile(fileext = ".geojson")
-    ok <- tryCatch({ utils::download.file(url, tmp, quiet = TRUE, mode = "wb"); TRUE },
-                   error = function(e) { cat("  fetch failed at offset", start, ":", conditionMessage(e), "\n"); FALSE })
-    x <- if (ok) tryCatch(st_read(tmp, quiet = TRUE), error = function(e) NULL) else NULL
-    unlink(tmp)
-    n <- if (is.null(x)) 0L else nrow(x)
+    # A failed page must NOT be read as "end of data": a transient timeout broke
+    # the loop and silently truncated the layer (2026-08-21: 4000 of 4777 HUC10s
+    # fetched, ~680 watersheds dropped off the request map). Retry with backoff,
+    # and abort loudly rather than write a short layer.
+    x <- NULL; ok <- FALSE
+    for (attempt in seq_len(5)) {
+      tmp <- tempfile(fileext = ".geojson")
+      got_ok <- tryCatch({ utils::download.file(url, tmp, quiet = TRUE, mode = "wb"); TRUE },
+                         error = function(e) {
+                           cat("  fetch failed at offset", start, "attempt", attempt,
+                               ":", conditionMessage(e), "\n"); FALSE })
+      if (got_ok) x <- tryCatch(st_read(tmp, quiet = TRUE), error = function(e) NULL)
+      unlink(tmp)
+      if (got_ok && !is.null(x)) { ok <- TRUE; break }
+      Sys.sleep(5 * attempt)
+    }
+    if (!ok)
+      stop("WBD paging failed at offset ", start, " after 5 attempts. Refusing to ",
+           "write a truncated unanalyzed layer.", call. = FALSE)
+    n <- nrow(x)
     cat(sprintf("  page offset %d: %d features\n", start, n))
     if (n) got[[length(got) + 1]] <- x[, intersect(c("huc10", "name"), names(x))]
     if (n < page) break

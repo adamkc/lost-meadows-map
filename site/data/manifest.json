@@ -1,6 +1,294 @@
 {
-  "generated": "2026-07-28",
+  "generated": "2026-08-21",
   "watersheds": {
+    "1008000101": {
+      "name": "Horse Creek",
+      "forest": "Shoshone National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1O7U8L46AisxCJ0g2ivuCnWjwzeFatCer",
+          "size": 169886
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=11d5ibEUqEoS6xBTAAnkQIF3M5ZaA8KXP",
+          "size": 391383
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1UhAoQ9SPCqWqnKG5SuH9FYU2pSCg77Dn",
+          "size": 12287565
+        }
+      ]
+    },
+    "1008000102": {
+      "name": "Warm Spring Creek-Wind River",
+      "forest": "",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=15xrA7kiODO6xsNhJp6Uk5eomwJFhp_Nb",
+          "size": 728723
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1xP02VZKmubM1_0jj4dxAVmxu0jP2zf3R",
+          "size": 1694884
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=14ELpVUEpsbbRs3D-9Ai0-UFvCGQ-gmp0",
+          "size": 36162783
+        }
+      ]
+    },
+    "1008000103": {
+      "name": "Torrey Creek-Wind River",
+      "forest": "Shoshone National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1Y4L9WnO8mQk_QKpitisvaIaD1jmICttA",
+          "size": 209793
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1dRYMnYkHxAr263h3VfNFLoKDTTiJA7Dx",
+          "size": 500916
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1RuNzjH2ih4tm43zbwe8RwG_YnwLM7lZA",
+          "size": 16634729
+        }
+      ]
+    },
+    "1008000104": {
+      "name": "East Fork Wind River",
+      "forest": "Shoshone National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1J_evDC23eyLTsYidZr2rJbYT6tj804Sb",
+          "size": 400642
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1yY-dW75yyBZ5wvEJYjzXOAWQMk1hqc8p",
+          "size": 703853
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1T9nv43xz92NG9-aF7gIv3HQUUVBPcQ_w",
+          "size": 40774127
+        }
+      ]
+    },
+    "1008000105": {
+      "name": "Dinwoody Creek-Wind River",
+      "forest": "",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1560QCqceIgsiEadEsfvc198ab5SGsgbq",
+          "size": 327136
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1RTy_HmnF0LkzDbFVT4CTcaOPUBRDyFI8",
+          "size": 572686
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=12JWyFMbPhsMy5lJiwIFsBAEj_TotrqkF",
+          "size": 24355021
+        }
+      ]
+    },
+    "1008000106": {
+      "name": "Bull Lake Creek",
+      "forest": "",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1WBcVEan_oiDiErlskOHXfbzSBEpKtWlZ",
+          "size": 414498
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1QVD2Ob-jaZWJnvTl165XUIoy3Y5w1Lg7",
+          "size": 1191326
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1X7hFnL0v4EEu-57MeW3wwoy6hexiABLK",
+          "size": 21303271
+        }
+      ]
+    },
+    "1008000901": {
+      "name": "Wood River",
+      "forest": "Shoshone National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1KkL-NzzMIW9NHY4xcokCn27dg7rOdH4Y",
+          "size": 134604
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1Gs07uKKonm2pIkPCkAhJmkYmK2loNysx",
+          "size": 223295
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1GXLodiVdr4nDK8n3bet_Ta-hUMpOAZ8b",
+          "size": 19620579
+        }
+      ]
+    },
+    "1008000902": {
+      "name": "Upper Greybull River",
+      "forest": "Shoshone National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1gwg-P78i86rzYidgN_MNrAaP3C7djzUq",
+          "size": 489258
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=174zMIG8fMqh4Y6AEuk0npAakkzmgCnzp",
+          "size": 801371
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=12iRB52Nk-u6xooC7vy9Atk1P9kq_E9j7",
+          "size": 37333953
+        }
+      ]
+    },
+    "1008000903": {
+      "name": "Middle Greybull River",
+      "forest": "",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1mS-uiE6x_V6Dooa2yUaTjVB1XfIpP1Cc",
+          "size": 393418
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1XcIhtSTn1ysJRo4cv70J5XbYqJw2p6JA",
+          "size": 674548
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1eMQZdPfzYku0SdxfmApPcZfJMBUbW00F",
+          "size": 21720953
+        }
+      ]
+    },
+    "1404010101": {
+      "name": "Roaring Fork-Green River",
+      "forest": "Bridger-Teton National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1Cm8iuLWN9-RuipCdmix85ETMhb5Xpm4W",
+          "size": 646834
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1ubpoiMrqwp-uC1O3mtBkLS5qJdq9jCFt",
+          "size": 1415376
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1djnCbg5FBO2bcLkVUU0qR3OZVFbS3sKA",
+          "size": 21132453
+        }
+      ]
+    },
+    "1404010103": {
+      "name": "Tosi Creek-Green River",
+      "forest": "Bridger-Teton National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1Cc6TcY7RYo4yQ0t3pxTOfIARF0vgWn1s",
+          "size": 975501
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1kaj7n6fR_-835AI4lXv2GqOOhUMqSc-L",
+          "size": 1769895
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1MwYMR3f0q7yBRjsAILebjLKVaSe-_Axc",
+          "size": 27711173
+        }
+      ]
+    },
+    "1404010204": {
+      "name": "Boulder Creek",
+      "forest": "Bridger-Teton National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1ehODmK4HZrCC-miRHK0medSUjiIHjnq6",
+          "size": 557504
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1_hUC86o6n01RXHbLtLHdKF10nMnAELBL",
+          "size": 1609160
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1bAGid-ovGQpIPjIeunsL5vdcI_T_VEl4",
+          "size": 14422477
+        }
+      ]
+    },
     "1605010101": {
       "name": "Third Creek-Frontal Lake Tahoe",
       "forest": "Lake Tahoe Basin Management Unit",
@@ -658,6 +946,78 @@
           "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1THwOansYFgCDfdUoDff3Ak9suJJ1AEiv",
           "size": 31478462
+        }
+      ]
+    },
+    "1704010302": {
+      "name": "Upper Hoback River",
+      "forest": "Bridger-Teton National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1bAbaL-LRL_oq4_N2BfYjR6A12m90HNga",
+          "size": 402401
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=12k7zsjRRfxnXJ9HjScre2VZSYuvqOU1N",
+          "size": 745777
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1dKAM-wlnNNMueEc1wjoGftKiFNKwrFok",
+          "size": 26266129
+        }
+      ]
+    },
+    "1704010303": {
+      "name": "Lower Hoback River",
+      "forest": "Bridger-Teton National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1tG3canngg8XgU5CrQVGj1JtaQLmez1oQ",
+          "size": 145399
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1YjsZy9Jf-vIvitPEpl7pUL9aQQ4ngbMq",
+          "size": 360174
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1c9zl2oVH_jGazkHKaWXZVxJwUwcXEAde",
+          "size": 27877325
+        }
+      ]
+    },
+    "1704010304": {
+      "name": "Greys River",
+      "forest": "Bridger-Teton National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1NLc9yqu2V1RZM7rUHxHcbTTGDo_gAVOA",
+          "size": 283442
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1w_IlnT7iI1nmY2CCezj0tVow0hQrSVDz",
+          "size": 627886
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1gUSSFPBqtBe8HC9hDeHKz9PU_wsi05m-",
+          "size": 42290311
         }
       ]
     },
@@ -9599,14 +9959,14 @@
         "name": "",
         "label": "All Sierra Nevada high-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1ABxqAyIyiez8OTbExaPj1hMEAmguyf_n",
-        "size": 60227584
+        "size": 64577536
       },
       {
         "type": "medium",
         "name": "",
         "label": "All Sierra Nevada medium-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1IkidxDZQjz2MYCi2rskmku0cGpTLAcSN",
-        "size": 79073280
+        "size": 86224896
       }
     ],
     "full": {

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-21",
+  "generated": "2026-09-08",
   "watersheds": {
     "1008000101": {
       "name": "Horse Creek",
@@ -8611,6 +8611,30 @@
         }
       ]
     },
+    "1804000907": {
+      "name": "South Fork Tuolumne River",
+      "forest": "",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=18N50gMKNoxUREMYXYe-yVaDSyUM3OAXs",
+          "size": 42281
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1Y_rpcxU55FuRsFpRRix5WAkmftqeWbQv",
+          "size": 97863
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1vC32YXJvZ4rGVXMsgo2SXBTXVC9sfdgE",
+          "size": 8197163
+        }
+      ]
+    },
     "1804000908": {
       "name": "Clavey River",
       "forest": "Stanislaus National Forest",
@@ -9959,14 +9983,14 @@
         "name": "",
         "label": "All Sierra Nevada high-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1ABxqAyIyiez8OTbExaPj1hMEAmguyf_n",
-        "size": 64577536
+        "size": 64626688
       },
       {
         "type": "medium",
         "name": "",
         "label": "All Sierra Nevada medium-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1IkidxDZQjz2MYCi2rskmku0cGpTLAcSN",
-        "size": 86224896
+        "size": 86335488
       }
     ],
     "full": {

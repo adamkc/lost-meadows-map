@@ -8619,19 +8619,19 @@
           "type": "high",
           "label": "High-confidence polygons (Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=18N50gMKNoxUREMYXYe-yVaDSyUM3OAXs",
-          "size": 42281
+          "size": 42262
         },
         {
           "type": "medium",
           "label": "Medium-confidence polygons (Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1Y_rpcxU55FuRsFpRRix5WAkmftqeWbQv",
-          "size": 97863
+          "size": 106541
         },
         {
           "type": "raster",
           "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1vC32YXJvZ4rGVXMsgo2SXBTXVC9sfdgE",
-          "size": 8197163
+          "size": 8142751
         }
       ]
     },
@@ -9983,14 +9983,14 @@
         "name": "",
         "label": "All Sierra Nevada high-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1ABxqAyIyiez8OTbExaPj1hMEAmguyf_n",
-        "size": 64626688
+        "size": 64618496
       },
       {
         "type": "medium",
         "name": "",
         "label": "All Sierra Nevada medium-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1IkidxDZQjz2MYCi2rskmku0cGpTLAcSN",
-        "size": 86335488
+        "size": 86327296
       }
     ],
     "full": {

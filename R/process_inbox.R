@@ -187,10 +187,18 @@ writeLines(c(paste0("new=", length(new_hucs)), paste0("hucs=", paste(new_hucs, c
 stamp <- format(Sys.time(), "%Y%m%d_%H%M%S")
 dest  <- file.path(INBOX_DONE, stamp); ensure_dir(dest)
 moved <- 0L
-to_archive <- raw[grepl("^[0-9]{10}_", basename(raw))]   # only the inputs; leave README etc.
+to_archive <- raw[grepl("^[0-9]{10}_", basename(raw)) |
+                  basename(raw) == "run_info.txt"]     # inputs + provenance; leave README etc.
 for (f in to_archive) {
   if (!file.exists(f)) next
-  ok <- tryCatch(file.rename(f, file.path(dest, basename(f))), warning = function(w) FALSE, error = function(e) FALSE)
+  nm <- basename(f)
+  if (nm == "run_info.txt") {        # one per watershed, so prefix the HUC to avoid collisions
+    L <- tryCatch(readLines(f, warn = FALSE), error = function(e) character())
+    h <- trimws(sub("^huc10:", "", grep("^huc10:", L, value = TRUE)[1]))
+    if (is.na(h) || !nzchar(h)) h <- basename(dirname(f))
+    nm <- paste0(h, "_run_info.txt")
+  }
+  ok <- tryCatch(file.rename(f, file.path(dest, nm)), warning = function(w) FALSE, error = function(e) FALSE)
   if (isTRUE(ok)) moved <- moved + 1L
 }
 for (d in rev(list.dirs(INBOX_DIR, recursive = TRUE))) {       # prune emptied folders

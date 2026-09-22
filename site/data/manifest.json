@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-08",
+  "generated": "2026-09-22",
   "watersheds": {
     "1008000101": {
       "name": "Horse Creek",
@@ -4633,6 +4633,30 @@
         }
       ]
     },
+    "1802000306": {
+      "name": "Butte Creek-Lost Creek",
+      "forest": "Lassen National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1GkWljNBGCpKyS2olu-oWFb5LHEf0VwQv",
+          "size": 787834
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1DnhHzfGJngDYV1hgfGJtV7b_IsQO1Oi_",
+          "size": 765872
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1niFX8Drz8TXKTdA3uuT4CqmUdiyLNISM",
+          "size": 27379801
+        }
+      ]
+    },
     "1802000307": {
       "name": "Hat Creek",
       "forest": "Lassen National Forest",
@@ -5446,6 +5470,54 @@
           "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=12xZ8318t8faYVXpphloj3DoYr_32Ybo6",
           "size": 23424417
+        }
+      ]
+    },
+    "1802012101": {
+      "name": "Headwaters North Fork Feather River",
+      "forest": "Lassen National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1mmcpag8-qVP97KRNwrl8_Bwoz14GhHLK",
+          "size": 227829
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1O3PS9cnowAt8zwDcP59X4qfu155spM0o",
+          "size": 347790
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1lahatZtRQarvXNiQ54QEUfLjft5X4IUn",
+          "size": 12479418
+        }
+      ]
+    },
+    "1802012102": {
+      "name": "Hamilton Branch",
+      "forest": "",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1k8Akp8RnYS7T53CDSX4Ux2c3yyaEVM1Z",
+          "size": 478561
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1YDVoDJ66hSZtLckmSbCYz7h3yMpul8fm",
+          "size": 445240
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=13iOiUlWShUqwFtl74qveTHn2jJk0-eBU",
+          "size": 22025055
         }
       ]
     },
@@ -9983,14 +10055,14 @@
         "name": "",
         "label": "All Sierra Nevada high-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1ABxqAyIyiez8OTbExaPj1hMEAmguyf_n",
-        "size": 64618496
+        "size": 66310144
       },
       {
         "type": "medium",
         "name": "",
         "label": "All Sierra Nevada medium-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1IkidxDZQjz2MYCi2rskmku0cGpTLAcSN",
-        "size": 86327296
+        "size": 88100864
       }
     ],
     "full": {

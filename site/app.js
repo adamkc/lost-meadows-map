@@ -35,6 +35,14 @@ const AVAIL_COLOR = { full: '#1a9850', partial: '#fee08b', none: '#cccccc' };
 // highlight auto-expires, so the map never accumulates stale "new" flags.
 const NEW_DAYS = 30;
 const NEW_COLOR = '#00bcd4';
+
+// Elevation source codes stamped into huc10.geojson by process_inbox.R.
+const DEM_LABEL = {
+  lidar1m: '1 m lidar averaged to 10 m',
+  '3dep13': 'USGS 3DEP 1/3 arc-second (10 m)',
+  elevatr: 'AWS terrain tiles (10 m)',
+  other: 'other local 10 m DEM',
+};
 function isRecentlyAdded(added) {
   if (!added) return false;
   const t = Date.parse(added);
@@ -274,10 +282,14 @@ function watershedPopup(props) {
   const huc = props.huc10;
   const entry = MANIFEST.watersheds[huc];
   const tag = props.isnew ? ' <span class="newtag">recently added</span>' : '';
-  const title = `${(entry && entry.name) || props.name || 'Watershed'} <span class="huc">${huc}</span>${tag}`;
+  const demTag = props.dem === 'lidar1m' ? ' <span class="demtag">lidar</span>' : '';
+  const demHtml = props.dem
+    ? `<p class="dem">Elevation source: ${DEM_LABEL[props.dem] || props.dem}</p>`
+    : '';
+  const title = `${(entry && entry.name) || props.name || 'Watershed'} <span class="huc">${huc}</span>${tag}${demTag}`;
 
   if (!entry || !entry.products || !entry.products.length) {
-    return `<h3>${title}</h3><p class="muted">No published products for this watershed.</p>`;
+    return `<h3>${title}</h3>${demHtml}<p class="muted">No published products for this watershed.</p>`;
   }
   const items = entry.products.map((p) =>
     linkRow(p.label, p.drive_url, p.size,
@@ -302,7 +314,7 @@ function watershedPopup(props) {
       `<ul class="links">${linkRow(f.label, f.drive_url, f.size,
         { huc, name: entry.forest, prod: 'forest', scope: 'forest' })}</ul></div>`;
   }
-  return `<h3>${title}</h3><ul class="links">${items}</ul>${vizHtml}${forestHtml}`;
+  return `<h3>${title}</h3>${demHtml}<ul class="links">${items}</ul>${vizHtml}${forestHtml}`;
 }
 
 // Popup for an un-analyzed watershed: a prefilled mailto to request its outputs.

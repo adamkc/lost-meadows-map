@@ -73,7 +73,7 @@ cat(sprintf("\n  >>> new/updated watersheds in this batch: %d  (%s)\n",
 TODAY <- as.character(Sys.Date())
 B <- st_read(BOUNDARY_GEOJSON, quiet = TRUE)
 B$huc10 <- as.character(B$huc10)
-keepcols <- c("huc10", "name", "areasqkm", "core", "added")
+keepcols <- c("huc10", "name", "areasqkm", "core", "added", "dem")
 for (c0 in setdiff(keepcols, names(B))) B[[c0]] <- NA   # add `added` (etc.) if absent
 to_fetch <- setdiff(new_hucs, B$huc10)
 new_lookup <- data.frame(huc10 = character(0), name = character(0), forest = character(0))
@@ -100,6 +100,30 @@ for (h in setdiff(new_hucs, new_lookup$huc10)) {
 }
 
 B$added[B$huc10 %in% new_hucs] <- TODAY            # flag this batch as recently added
+
+# DEM provenance: a run_info.txt dropped alongside the products records which
+# elevation source produced the run. Store a short code here; the front end
+# maps it to a label. Watersheds without one keep dem = NA and say nothing.
+dem_code <- function(s) {
+  s <- tolower(s)
+  if (grepl("lidar", s, fixed = TRUE)) "lidar1m"
+  else if (grepl("elevatr", s, fixed = TRUE)) "elevatr"
+  else if (grepl("10m.vrt", s, fixed = TRUE)) "3dep13"
+  else "other"
+}
+ri <- list.files(INBOX_DIR, pattern = "^run_info[.]txt$", recursive = TRUE, full.names = TRUE)
+ri <- ri[!grepl("_done", ri, fixed = TRUE)]
+for (f in ri) {
+  L <- readLines(f, warn = FALSE)
+  hl <- grep("^huc10:", L, value = TRUE)
+  dl <- grep("^dem:",   L, value = TRUE)
+  if (!length(hl) || !length(dl)) next
+  h <- trimws(sub("^huc10:", "", hl[1]))
+  d <- trimws(sub("^dem:",   "", dl[1]))
+  if (!(h %in% new_hucs)) next
+  B$dem[B$huc10 == h] <- dem_code(d)
+  message(sprintf("  dem provenance: %s = %s  (%s)", h, dem_code(d), d))
+}
 if (file.exists(BOUNDARY_GEOJSON)) file.remove(BOUNDARY_GEOJSON)
 st_write(B, BOUNDARY_GEOJSON, driver = "GeoJSON", quiet = TRUE,
          layer_options = c("COORDINATE_PRECISION=5", "RFC7946=YES"))

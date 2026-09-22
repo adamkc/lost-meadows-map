@@ -9739,6 +9739,54 @@
         }
       ]
     },
+    "1808000301": {
+      "name": "Upper Pine Creek",
+      "forest": "Lassen National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=14-d5uvYcYh9S1vgD5qjL_hdHyuhpIrzu",
+          "size": 425283
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1EyxPwb1992V21Wk9q3KAUzITfj27mycD",
+          "size": 620706
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1RvOM8FYG3YuqdH_DwBayaK-jRZyPZaJN",
+          "size": 10415008
+        }
+      ]
+    },
+    "1808000304": {
+      "name": "Upper Susan River",
+      "forest": "Lassen National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1xX4YsWxhXaCZ1161rA0KRwko73T_HC4F",
+          "size": 609268
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1SoNF7mV9sNYbXpj79cOeUvVoEPnoqGdP",
+          "size": 813609
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1EAj2h_VuAqGhI6d3vyU6tnLf7orLqHJ4",
+          "size": 20760927
+        }
+      ]
+    },
     "1808000308": {
       "name": "Baxter Creek-Frontal Honey Lake",
       "forest": "",
@@ -10055,14 +10103,14 @@
         "name": "",
         "label": "All Sierra Nevada high-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1ABxqAyIyiez8OTbExaPj1hMEAmguyf_n",
-        "size": 66310144
+        "size": 66994176
       },
       {
         "type": "medium",
         "name": "",
         "label": "All Sierra Nevada medium-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1IkidxDZQjz2MYCi2rskmku0cGpTLAcSN",
-        "size": 88100864
+        "size": 88895488
       }
     ],
     "full": {

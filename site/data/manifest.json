@@ -4537,6 +4537,30 @@
         }
       ]
     },
+    "1802000301": {
+      "name": "Horse Creek",
+      "forest": "",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1QBPoHxkbeW-9ZbOvX3m1JqKm2c0fxOUj",
+          "size": 427965
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1tKaIg-tTm7eVEGPPTgfnhcHY_MFoal95",
+          "size": 500939
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1qmgaIL-Dim8ncd4iD1yo-6mplvJx6w15",
+          "size": 25437821
+        }
+      ]
+    },
     "1802000302": {
       "name": "Beaver Creek",
       "forest": "Lassen National Forest",
@@ -6805,6 +6829,54 @@
         }
       ]
     },
+    "1802015301": {
+      "name": "North Fork Battle Creek",
+      "forest": "",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1A875Kgtn7AdnCV4mmZ8rA3m_OpjPfM4M",
+          "size": 349741
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1cYZW4nqb7ap_zVhcgqaM6vZcEyAJh6tT",
+          "size": 550074
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1GPfWqy3K3Ae0Ns3BU3DzOgA3k7rWIGXR",
+          "size": 20686223
+        }
+      ]
+    },
+    "1802015302": {
+      "name": "South Fork Battle Creek",
+      "forest": "",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1GTXd6g_vowY2v4mrosCwfBwOAzEy_aC2",
+          "size": 145814
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1pLQt4_SA8Xb6YuFFnzBqlSDaLJIPL8IM",
+          "size": 258570
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1dx9VApG0mLzHlzWMsQFRKrJvTp3LHBg3",
+          "size": 11797371
+        }
+      ]
+    },
     "1802015303": {
       "name": "Battle Creek",
       "forest": "",
@@ -7018,6 +7090,30 @@
           "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1thG0v-x5Iif6j9syGR8XpvMV696BnD0-",
           "size": 16150593
+        }
+      ]
+    },
+    "1802015601": {
+      "name": "Antelope Creek",
+      "forest": "Lassen National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=14B0PTyiyz734OxqM1EktWurgMw2sa1rx",
+          "size": 152780
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1yA01yD7Pdjg02gSSGzJcZumd06C_7EvX",
+          "size": 267224
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1mZdPjA0-5MtZ2CVGGIdB6GA6ZWAs1Wbc",
+          "size": 18869881
         }
       ]
     },
@@ -9763,6 +9859,54 @@
         }
       ]
     },
+    "1808000302": {
+      "name": "Middle Pine Creek",
+      "forest": "Lassen National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1qIlv0vchas3UeUz5d6G1F9ucwPByZ4jo",
+          "size": 232795
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1r7hHZ95uHAhYDuPDxnsLs5CsIIS5Dc5o",
+          "size": 226052
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1iSqB4Lz1Pd3dz56O9gOz7UNUZgC86l77",
+          "size": 10943159
+        }
+      ]
+    },
+    "1808000303": {
+      "name": "Lower Pine Creek-Eagle Lake",
+      "forest": "Lassen National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1zCEnsC_oEz-QuHeExXqzooebdnBWV3vD",
+          "size": 616468
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1cY5BQ8WitWCSf2hgsNxPLNFfXA86D2uM",
+          "size": 579221
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1zo__-O1BVhHbgAoG4XroSecf6LTw4Lzh",
+          "size": 22234016
+        }
+      ]
+    },
     "1808000304": {
       "name": "Upper Susan River",
       "forest": "Lassen National Forest",
@@ -10103,14 +10247,14 @@
         "name": "",
         "label": "All Sierra Nevada high-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1ABxqAyIyiez8OTbExaPj1hMEAmguyf_n",
-        "size": 66994176
+        "size": 68890624
       },
       {
         "type": "medium",
         "name": "",
         "label": "All Sierra Nevada medium-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1IkidxDZQjz2MYCi2rskmku0cGpTLAcSN",
-        "size": 88895488
+        "size": 91238400
       }
     ],
     "full": {

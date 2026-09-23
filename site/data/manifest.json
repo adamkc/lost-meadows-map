@@ -7021,6 +7021,30 @@
         }
       ]
     },
+    "1802015501": {
+      "name": "Paynes Creek",
+      "forest": "",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1XwRyYwE2jJK62bsufChAfqQRk97yqK47",
+          "size": 116660
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1Xg3XKcFeuSbwOVhZK9eTMo9jUk0yKrIz",
+          "size": 257573
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1F5P3oC6NoxlEJl2mYa7ji8GYEnHAhRBp",
+          "size": 9412367
+        }
+      ]
+    },
     "1802015502": {
       "name": "Reeds Creek",
       "forest": "",
@@ -10184,7 +10208,7 @@
         "name": "Lassen National Forest",
         "label": "Lassen National Forest (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1oJTxCtHhO4AzaXYMw0DxInf5lPIZb0Ss",
-        "size": 87785472
+        "size": 76144640
       },
       {
         "name": "Mendocino National Forest",
@@ -10247,14 +10271,14 @@
         "name": "",
         "label": "All Sierra Nevada high-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1ABxqAyIyiez8OTbExaPj1hMEAmguyf_n",
-        "size": 68890624
+        "size": 68993024
       },
       {
         "type": "medium",
         "name": "",
         "label": "All Sierra Nevada medium-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1IkidxDZQjz2MYCi2rskmku0cGpTLAcSN",
-        "size": 91238400
+        "size": 91439104
       }
     ],
     "full": {

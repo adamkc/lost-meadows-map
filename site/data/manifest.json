@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-22",
+  "generated": "2026-09-30",
   "watersheds": {
     "1008000101": {
       "name": "Horse Creek",
@@ -2986,6 +2986,30 @@
           "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1AxYa_Z8dWPHRd3o71eOkqV8yK6N3mIvZ",
           "size": 14628105
+        }
+      ]
+    },
+    "1801020205": {
+      "name": "North Fork Sprague River",
+      "forest": "Fremont-Winema National Forest",
+      "products": [
+        {
+          "type": "high",
+          "label": "High-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1HHbAEUmWlglr5TcFb_LTBaW1HTQ4V2Aq",
+          "size": 491840
+        },
+        {
+          "type": "medium",
+          "label": "Medium-confidence polygons (Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1ThUjn_phghCbmCm7RHYLNr-4aKySOsUb",
+          "size": 675658
+        },
+        {
+          "type": "raster",
+          "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
+          "drive_url": "https://drive.google.com/uc?export=download&id=1WRjYGwEeJ_2RcvApNT32Jp9uQs5LP3i8",
+          "size": 22105083
         }
       ]
     },
@@ -10271,14 +10295,14 @@
         "name": "",
         "label": "All Sierra Nevada high-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1ABxqAyIyiez8OTbExaPj1hMEAmguyf_n",
-        "size": 68993024
+        "size": 69431296
       },
       {
         "type": "medium",
         "name": "",
         "label": "All Sierra Nevada medium-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1IkidxDZQjz2MYCi2rskmku0cGpTLAcSN",
-        "size": 91439104
+        "size": 92024832
       }
     ],
     "full": {

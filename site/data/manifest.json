@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-30",
+  "generated": "2026-10-09",
   "watersheds": {
     "1008000101": {
       "name": "Horse Creek",
@@ -6081,19 +6081,19 @@
           "type": "high",
           "label": "High-confidence polygons (Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=19VPyQnWwoGjw-yUgEFKKrRL2aMRWK083",
-          "size": 248184
+          "size": 54199
         },
         {
           "type": "medium",
           "label": "Medium-confidence polygons (Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1eVG1Q7Ug0HXnT2xBecer1vUrFRQf3AM9",
-          "size": 400884
+          "size": 188222
         },
         {
           "type": "raster",
           "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1zQzo8nvwutFT573_y399a5HzKQ8ryCSY",
-          "size": 22428601
+          "size": 22596187
         }
       ]
     },
@@ -10295,14 +10295,14 @@
         "name": "",
         "label": "All Sierra Nevada high-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1ABxqAyIyiez8OTbExaPj1hMEAmguyf_n",
-        "size": 69431296
+        "size": 69378048
       },
       {
         "type": "medium",
         "name": "",
         "label": "All Sierra Nevada medium-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1IkidxDZQjz2MYCi2rskmku0cGpTLAcSN",
-        "size": 92024832
+        "size": 91971584
       }
     ],
     "full": {

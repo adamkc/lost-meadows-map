@@ -4329,19 +4329,19 @@
           "type": "high",
           "label": "High-confidence polygons (Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1t5oGrt8IB_1N4EjmwjincpCYbF_NfdVj",
-          "size": 4804
+          "size": 4927
         },
         {
           "type": "medium",
           "label": "Medium-confidence polygons (Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1bWeFA5bscI6zBJTQxMBUNzwVpkUv6YdI",
-          "size": 29196
+          "size": 32908
         },
         {
           "type": "raster",
           "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1fwH9YuerNnLWimPCiWjtnCnZHLqXsN6s",
-          "size": 19464577
+          "size": 19769591
         }
       ]
     },
@@ -4353,19 +4353,19 @@
           "type": "high",
           "label": "High-confidence polygons (Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1bMbKZ11MRMrnw56FqMYM4h0p3m8yguM6",
-          "size": 40950
+          "size": 45952
         },
         {
           "type": "medium",
           "label": "Medium-confidence polygons (Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1EjNo4UXqnOJ8oqcr9RIC7BG5YK0038nU",
-          "size": 124425
+          "size": 156271
         },
         {
           "type": "raster",
           "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1dT6Op2p98YILYo1mBUqiFxH3wQZKYKIp",
-          "size": 24281985
+          "size": 24250343
         }
       ]
     },
@@ -4377,19 +4377,19 @@
           "type": "high",
           "label": "High-confidence polygons (Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1YY7eOudHL95rJnA8rtJPHMORoW41l2lL",
-          "size": 48877
+          "size": 60292
         },
         {
           "type": "medium",
           "label": "Medium-confidence polygons (Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1PSi9OlaMno-JnoDzYn1LBNWwVJDNTox_",
-          "size": 123398
+          "size": 145053
         },
         {
           "type": "raster",
           "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1fTECh21th1Cv37Zlke6HyRNFudC960iL",
-          "size": 26333163
+          "size": 26855141
         }
       ]
     },
@@ -4497,19 +4497,19 @@
           "type": "high",
           "label": "High-confidence polygons (Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1kkRxgOtgZZro7BOiriccKlzPmFiafqiA",
-          "size": 28350
+          "size": 34991
         },
         {
           "type": "medium",
           "label": "Medium-confidence polygons (Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1IGB_gPLLzlb6cVzxnQJcySWlZDI6REVt",
-          "size": 86551
+          "size": 114969
         },
         {
           "type": "raster",
           "label": "Prediction raster (GeoTIFF, Sierra Nevada model)",
           "drive_url": "https://drive.google.com/uc?export=download&id=1Hhbok5qieUrEh_Fzn5spKTv8MWfdACCl",
-          "size": 17939735
+          "size": 18436441
         }
       ]
     },
@@ -10295,14 +10295,14 @@
         "name": "",
         "label": "All Sierra Nevada high-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1ABxqAyIyiez8OTbExaPj1hMEAmguyf_n",
-        "size": 69378048
+        "size": 69386240
       },
       {
         "type": "medium",
         "name": "",
         "label": "All Sierra Nevada medium-confidence polygons (GeoPackage)",
         "drive_url": "https://drive.google.com/uc?export=download&id=1IkidxDZQjz2MYCi2rskmku0cGpTLAcSN",
-        "size": 91971584
+        "size": 91983872
       }
     ],
     "full": {
